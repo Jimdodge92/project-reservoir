@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚰 Project Reservoir • Jet Fuel Quota & Real Water Footprint</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060911;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 40%),
+        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 40%),
+        radial-gradient(at 50% 100%, rgba(244, 63, 94, 0.08) 0px, transparent 50%);
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .glass-card {
+      background: rgba(13, 19, 33, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+
+    /* ============================================================
+       1. ROCKET FUEL COCKPIT TANK (QUOTA)
+       ============================================================ */
+    .fuel-tank {
+      position: relative;
+      height: 320px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(20, 15, 10, 0.8) 0%, rgba(10, 8, 5, 0.95) 100%);
+      border: 2px solid rgba(245, 158, 11, 0.25);
+      box-shadow: 
+        inset 0 0 40px rgba(0, 0, 0, 0.9),
+        0 15px 35px -10px rgba(245, 158, 11, 0.2);
+      overflow: hidden;
+    }
+
+    .fuel-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 76.5%; /* Dynamic */
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.9) 0%, rgba(217, 119, 6, 0.95) 50%, rgba(180, 83, 9, 0.98) 100%);
+      transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fuel-body.low {
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.9) 0%, rgba(185, 28, 28, 0.95) 100%);
+    }
+
+    /* Fuel Slosh Wave */
+    .fuel-wave-wrapper {
+      position: absolute;
+      top: -28px;
+      left: 0;
+      width: 200%;
+      height: 30px;
+    }
+
+    .fuel-wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      fill: rgba(245, 158, 11, 0.9);
+      animation: fuelSlosh 4s linear infinite;
+    }
+
+    .fuel-body.low .fuel-wave {
+      fill: rgba(239, 68, 68, 0.9);
+    }
+
+    @keyframes fuelSlosh {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
+       2. REAL-LIFE PHYSICAL WATER TANK (UC RIVERSIDE COOLING WATER)
+       ============================================================ */
+    .water-tank {
+      position: relative;
+      height: 320px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(8, 20, 35, 0.8) 0%, rgba(4, 12, 22, 0.95) 100%);
+      border: 2px solid rgba(6, 182, 212, 0.25);
+      box-shadow: 
+        inset 0 0 40px rgba(0, 0, 0, 0.9),
+        0 15px 35px -10px rgba(6, 182, 212, 0.2);
+      overflow: hidden;
+    }
+
+    .water-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 65%; /* Dynamic */
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.85) 0%, rgba(30, 58, 138, 0.95) 100%);
+      transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .water-wave-wrapper {
+      position: absolute;
+      top: -28px;
+      left: 0;
+      width: 200%;
+      height: 30px;
+    }
+
+    .water-wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      fill: rgba(6, 182, 212, 0.85);
+      animation: waterSlosh 3.2s linear infinite reverse;
+    }
+
+    @keyframes waterSlosh {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Steam bubbles rising */
+    .bubble {
+      position: absolute;
+      bottom: -15px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
+      border-radius: 50%;
+      pointer-events: none;
+      animation: rise 4s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.8; }
+      100% { transform: translateY(-240px) scale(1.3); opacity: 0; }
+    }
+
+    .tank-sheen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, transparent 40%, rgba(255, 255, 255, 0.02) 100%);
+      pointer-events: none;
+      border-radius: 18px;
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen p-4 md:p-8 flex flex-col justify-between">
+
+  <div class="max-w-7xl mx-auto w-full space-y-6">
+
+    <!-- Header Section (Cleaned up as requested) -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 p-2.5 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-amber-500/25">
+          <span class="text-2xl">🚰</span>
+        </div>
+        <div>
+          <h1 class="text-2xl font-black tracking-tight text-white">
+            Project Reservoir
+          </h1>
+        </div>
+      </div>
+
+      <!-- Action Control Buttons -->
+      <div class="flex items-center gap-2.5 flex-wrap">
+        <button onclick="triggerAction('jim_burst')" class="bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold px-3 py-2 rounded-xl transition-all shadow-md shadow-indigo-600/30 flex items-center gap-1.5">
+          <span>💧</span> Jim Eco-Cruise (Prompt)
+        </button>
+        <button onclick="triggerAction('nathan_burst')" class="bg-rose-600 hover:bg-rose-500 text-xs font-semibold px-3 py-2 rounded-xl transition-all shadow-md shadow-rose-600/30 flex items-center gap-1.5">
+          <span>🔥</span> Nathan Afterburner (Refactor)
+        </button>
+        <div class="glass-card px-3 py-1.5 rounded-xl flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-[11px] font-mono text-emerald-400">Live 5s Poller</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOP-LEVEL ORDER SELECTOR (WATER VS FUEL) -->
+    <div class="flex items-center justify-between py-2 border-b border-slate-800/60 pb-3">
+      <div class="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 gap-1.5 font-mono text-xs shadow-xl">
+        <button id="topBtnWater" onclick="setTopInteractive('water')" class="px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20">
+          <span class="text-base">🚰</span> Water
+        </button>
+        <button id="topBtnFuel" onclick="setTopInteractive('fuel')" class="px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+          <span class="text-base">⛽</span> Fuel
+        </button>
+      </div>
+    </div>
+
+    <!-- HERO GAUGES CONTAINER (DYNAMIC VERTICAL STACK ORDER) -->
+    <div id="heroGaugesContainer" class="flex flex-col gap-6">
+
+      <!-- FUEL HERO CARD -->
+      <div id="fuelHeroCard" class="glass-card rounded-3xl p-6 relative overflow-hidden border-amber-500/20">
+        
+        <!-- Header with Toggle Button -->
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black text-amber-300">Fuel Remaining</span>
+            <span id="fuelBadge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              Afterburner Active
+            </span>
+          </div>
+
+          <!-- 5-Hour vs Weekly Quota Toggle Button -->
+          <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 gap-1 font-mono text-[11px]">
+            <button id="btn5h" onclick="setFuelView('5h')" class="px-3 py-1 rounded-lg font-bold transition-all bg-amber-500 text-slate-950 shadow">
+              5-Hour Quota
+            </button>
+            <button id="btnWeekly" onclick="setFuelView('weekly')" class="px-3 py-1 rounded-lg font-bold transition-all text-slate-400 hover:text-white">
+              Weekly Quota
+            </button>
+          </div>
+        </div>
+
+        <!-- Fuel Remaining Numbers & Clock -->
+        <div class="flex items-baseline justify-between mb-2">
+          <div class="text-[11px] font-mono text-slate-400" id="fuelModeLabel">5-Hour Sprint Tank • Resets in 1h 08m</div>
+          <div class="text-right">
+            <span class="text-2xl font-black font-mono text-amber-400" id="fuelRemainingGal">383 gal</span>
+            <span class="text-[11px] font-mono text-slate-400 ml-1.5" id="fuelRemainingPct">(76.5% Left)</span>
+          </div>
+        </div>
+
+        <!-- The Physical Fuel Tank Graphic -->
+        <div class="fuel-tank my-2">
+          
+          <!-- Cockpit Markings (Dynamic based on 5h vs Weekly) -->
+          <div id="fuelTicks" class="absolute right-4 top-0 bottom-0 flex flex-col justify-between text-[10px] font-mono text-amber-400/70 py-4 pointer-events-none z-20">
+            <span>[F] 500 Gal — Full Tank</span>
+            <span>[3/4] 375 Gal</span>
+            <span>[1/2] 250 Gal — Half Fuel</span>
+            <span>[1/4] 125 Gal — Low Fuel Advisory</span>
+            <span>[E] 0 Gal — Flameout</span>
+          </div>
+
+          <!-- Laser Fuel Level -->
+          <div id="fuelLaserLine" class="absolute left-0 right-0 border-b-2 border-amber-300/80 shadow-lg shadow-amber-400/50 z-30 transition-all duration-1000 flex items-center justify-start pl-6" style="bottom: 76.5%;">
+            <span class="text-[10px] font-mono font-bold bg-slate-900/90 text-amber-300 px-2 py-0.5 rounded-md border border-amber-400/50 -mb-3">
+              FUEL LEVEL: <span id="fuelLaserText">76.5%</span>
+            </span>
+          </div>
+
+          <!-- Fuel Liquid Body -->
+          <div id="fuelBody" class="fuel-body" style="height: 76.5%;">
+            <div class="fuel-wave-wrapper">
+              <svg class="fuel-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C150,90 350,-40 500,60 C650,160 900,-20 1200,40 L1200,120 L0,120 Z"></path>
+              </svg>
+            </div>
+            <!-- Fuel bubbles -->
+            <div class="bubble" style="left: 20%; width: 10px; height: 10px; animation-delay: 0.3s;"></div>
+            <div class="bubble" style="left: 60%; width: 14px; height: 14px; animation-delay: 1.1s;"></div>
+            <div class="bubble" style="left: 80%; width: 8px; height: 8px; animation-delay: 1.8s;"></div>
+          </div>
+
+          <div class="tank-sheen"></div>
+        </div>
+
+        <!-- Fuel Telemetry Breakdown with Mini Pie Chart -->
+        <div class="flex items-center gap-3.5 mt-4 pt-3 border-t border-slate-800 text-xs font-mono">
+          
+          <!-- Small Mini Pie Chart showing % of total fuel used -->
+          <div class="relative flex-shrink-0 flex items-center justify-center" style="width: 78px; height: 78px;">
+            <canvas id="fuelMiniPie"></canvas>
+            <div class="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+              <span class="text-[8px] font-bold text-slate-400">BURN</span>
+              <span class="text-[10px] font-black text-white" id="fuelMiniTotal">117g</span>
+            </div>
+          </div>
+
+          <!-- Jim & Nathan Breakdown Cards -->
+          <div class="grid grid-cols-2 gap-2 flex-grow">
+            <div class="bg-slate-900/70 p-2.5 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-slate-400 uppercase">Jim</span>
+                <span class="text-[10px] font-bold text-indigo-400" id="jimFuelPct">22%</span>
+              </div>
+              <div class="text-sm font-bold text-indigo-300" id="jimFuelText">26 gal burned</div>
+              <span class="text-[10px] text-slate-500">Eco-Cruise (42 MPG)</span>
+            </div>
+            <div class="bg-slate-900/70 p-2.5 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-slate-400 uppercase">Nathan</span>
+                <span class="text-[10px] font-bold text-rose-400" id="nathanFuelPct">78%</span>
+              </div>
+              <div class="text-sm font-bold text-rose-300" id="nathanFuelText">91 gal burned</div>
+              <span class="text-[10px] text-rose-400">🔥 Afterburner (6 GPH)</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT HERO: REAL-LIFE PHYSICAL WATER FOOTPRINT (Cleaned up & Enhanced) -->
+      <div id="waterHeroCard" class="glass-card rounded-3xl p-6 relative overflow-hidden border-cyan-500/20">
+        
+        <!-- Header with Toggle Button -->
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black text-cyan-300">Water Consumed</span>
+            <span id="waterBadge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              Datacenter Cooling
+            </span>
+          </div>
+
+          <!-- 5-Hour vs Weekly Water Toggle Button -->
+          <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 gap-1 font-mono text-[11px]">
+            <button id="btnWater5h" onclick="setWaterView('5h')" class="px-3 py-1 rounded-lg font-bold transition-all bg-cyan-500 text-slate-950 shadow">
+              5-Hour Usage
+            </button>
+            <button id="btnWaterWeekly" onclick="setWaterView('weekly')" class="px-3 py-1 rounded-lg font-bold transition-all text-slate-400 hover:text-white">
+              Weekly Usage
+            </button>
+          </div>
+        </div>
+
+        <!-- Water Consumed Numbers & Clock -->
+        <div class="flex items-baseline justify-between mb-2">
+          <div class="text-[11px] font-mono text-slate-400" id="waterModeLabel">5-Hour Sprint Drain • Resets in 1h 08m</div>
+          <div class="text-right">
+            <span class="text-2xl font-black font-mono text-cyan-400" id="waterTotalLiters">14.80 L</span>
+            <span class="text-[11px] font-mono text-slate-400 ml-1.5" id="waterTotalBottles">(~30 Water Bottles)</span>
+          </div>
+        </div>
+
+        <!-- The Physical Water Tank Graphic -->
+        <div class="water-tank my-2">
+          
+          <!-- Water Markings (Dynamic based on 5h vs Weekly) -->
+          <div id="waterTicks" class="absolute right-4 top-0 bottom-0 flex flex-col justify-between text-[10px] font-mono text-cyan-400/70 py-4 pointer-events-none z-20">
+            <span>[MAX] 30.0 Liters — High Datacenter Drain</span>
+            <span>[3/4] 22.5 Liters (~45 Bottles)</span>
+            <span>[1/2] 15.0 Liters (~30 Bottles)</span>
+            <span>[1/4] 7.5 Liters (~15 Bottles)</span>
+            <span>[MIN] 0.0 Liters — Basin</span>
+          </div>
+
+          <!-- Laser Water Indicator -->
+          <div id="waterLaserLine" class="absolute left-0 right-0 border-b-2 border-cyan-300/80 shadow-lg shadow-cyan-400/50 z-30 transition-all duration-1000 flex items-center justify-start pl-6" style="bottom: 49.3%;">
+            <span class="text-[10px] font-mono font-bold bg-slate-900/90 text-cyan-300 px-2 py-0.5 rounded-md border border-cyan-400/50 -mb-3">
+              DRAIN LEVEL: <span id="waterLaserText">14.80 L</span>
+            </span>
+          </div>
+
+          <!-- Water Liquid Body -->
+          <div id="waterBody" class="water-body" style="height: 49.3%;">
+            <div class="water-wave-wrapper">
+              <svg class="water-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C150,90 350,-40 500,60 C650,160 900,-20 1200,40 L1200,120 L0,120 Z"></path>
+              </svg>
+            </div>
+            <!-- Steam bubbles -->
+            <div class="bubble" style="left: 15%; width: 12px; height: 12px; animation-delay: 0.2s;"></div>
+            <div class="bubble" style="left: 45%; width: 16px; height: 16px; animation-delay: 0.9s;"></div>
+            <div class="bubble" style="left: 75%; width: 10px; height: 10px; animation-delay: 1.4s;"></div>
+          </div>
+
+          <div class="tank-sheen"></div>
+        </div>
+
+        <!-- Water Telemetry Breakdown with Mini Pie Chart -->
+        <div class="flex items-center gap-3.5 mt-4 pt-3 border-t border-slate-800 text-xs font-mono">
+          
+          <!-- Small Mini Pie Chart showing % of total water used -->
+          <div class="relative flex-shrink-0 flex items-center justify-center" style="width: 78px; height: 78px;">
+            <canvas id="waterMiniPie"></canvas>
+            <div class="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+              <span class="text-[8px] font-bold text-slate-400">DRAIN</span>
+              <span class="text-[10px] font-black text-white" id="waterMiniTotal">14.8L</span>
+            </div>
+          </div>
+
+          <!-- Jim & Nathan Breakdown Cards -->
+          <div class="grid grid-cols-2 gap-2 flex-grow">
+            <div class="bg-slate-900/70 p-2.5 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-slate-400 uppercase">Jim</span>
+                <span class="text-[10px] font-bold text-indigo-400" id="jimWaterPct">22%</span>
+              </div>
+              <div class="text-sm font-bold text-indigo-300" id="jimWaterText">3.26 Liters</div>
+              <span class="text-[10px] text-slate-500" id="jimBottlesText">💧 ~7 Bottles</span>
+            </div>
+            <div class="bg-slate-900/70 p-2.5 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-slate-400 uppercase">Nathan</span>
+                <span class="text-[10px] font-bold text-rose-400" id="nathanWaterPct">78%</span>
+              </div>
+              <div class="text-sm font-bold text-rose-300" id="nathanWaterText">11.54 Liters</div>
+              <span class="text-[10px] text-rose-400" id="nathanBottlesText">🌊 ~23 Bottles</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DUAL TUG-OF-WAR BARS -->
+    <div id="tugOfWarContainer" class="flex flex-col gap-6">
+
+      <!-- Jet Fuel Tug-of-War -->
+      <div id="fuelTugCard" class="glass-card rounded-2xl p-4">
+        <div class="flex justify-between text-xs font-mono mb-2">
+          <span class="text-amber-400 font-bold">⛽ Jet Fuel Burn Ratio</span>
+          <span class="text-slate-400" id="fuelBurnRatioHeader">Total: 117 gal burned</span>
+        </div>
+        <div class="w-full h-7 bg-slate-900 rounded-lg overflow-hidden flex p-1 gap-1 border border-slate-700/80">
+          <div id="jimFuelBar" class="bg-indigo-600 rounded flex items-center justify-start px-2 text-[11px] font-bold font-mono transition-all duration-700" style="width: 22%;">
+            Jim: 22%
+          </div>
+          <div id="nathanFuelBar" class="bg-amber-600 rounded flex items-center justify-end px-2 text-[11px] font-bold font-mono transition-all duration-700" style="width: 78%;">
+            Nathan: 78%
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Water Footprint Tug-of-War -->
+      <div id="waterTugCard" class="glass-card rounded-2xl p-4">
+        <div class="flex justify-between text-xs font-mono mb-2">
+          <span class="text-cyan-400 font-bold">🚰 Real Cooling Water Ratio</span>
+          <span class="text-slate-400" id="waterBurnRatioHeader">Total: 14.8 L evaporated</span>
+        </div>
+        <div class="w-full h-7 bg-slate-900 rounded-lg overflow-hidden flex p-1 gap-1 border border-slate-700/80">
+          <div id="jimWaterBar" class="bg-indigo-600 rounded flex items-center justify-start px-2 text-[11px] font-bold font-mono transition-all duration-700" style="width: 22.2%;">
+            Jim: 22.2%
+          </div>
+          <div id="nathanWaterBar" class="bg-rose-600 rounded flex items-center justify-end px-2 text-[11px] font-bold font-mono transition-all duration-700" style="width: 77.8%;">
+            Nathan: 77.8%
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CHARTS ROW: 5-HOUR FUEL TIMELINE + 7-DAY REAL WATER HISTORY + LIVE TICKER -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- 5-Hour Fuel Curve (4 Cols) -->
+      <div class="glass-card rounded-2xl p-5 lg:col-span-4">
+        <h3 class="text-sm font-bold text-amber-300 mb-1">5-Hour Fuel Depletion Curve</h3>
+        <p class="text-xs text-slate-400 mb-4">Sprint quota remaining over 5-hour clock</p>
+        <div class="h-56">
+          <canvas id="fuelCurveChart"></canvas>
+        </div>
+      </div>
+
+      <!-- 7-Day Real Physical Liters (5 Cols) -->
+      <div class="glass-card rounded-2xl p-5 lg:col-span-5">
+        <h3 class="text-sm font-bold text-cyan-300 mb-1">7-Day Real Physical Water (Liters)</h3>
+        <p class="text-xs text-slate-400 mb-4">Actual liters evaporated per day (Jim vs Nathan)</p>
+        <div class="h-56">
+          <canvas id="waterHistoryChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Live Stream Event Ticker (3 Cols) -->
+      <div class="glass-card rounded-2xl p-5 lg:col-span-3 flex flex-col justify-between">
+        <div>
+          <h3 class="text-sm font-bold text-white mb-1">Live Telemetry Feed</h3>
+          <p class="text-xs text-slate-400 mb-3">Real-time fuel & cooling events</p>
+          <div class="space-y-2 overflow-y-auto max-h-48 pr-1" id="eventsContainer">
+            <!-- Populated via SSE -->
+          </div>
+        </div>
+        <div class="pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-500 text-center">
+          Monitoring ~/.gemini/antigravity
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto w-full text-center text-xs text-slate-500 py-6 border-t border-slate-900 mt-8 font-mono">
+    🚰 Project Reservoir • Jet-A Fuel & UC Riverside Physical Water Footprint • Jim vs. Nathan
+  </footer>
+
+  <script>
+    let fuelChart, waterChart, miniPieChart, waterMiniPieChart;
+    let currentFuelView = '5h'; // '5h' or 'weekly'
+    let currentWaterView = '5h'; // '5h' or 'weekly'
+    let currentTopMode = 'water'; // 'water' or 'fuel'
+    let latestData = null;
+
+    function setTopInteractive(mode) {
+      currentTopMode = mode;
+      applyInteractiveVisibility();
+    }
+
+    function applyInteractiveVisibility() {
+      const btnWater = document.getElementById('topBtnWater');
+      const btnFuel = document.getElementById('topBtnFuel');
+      const fuelCard = document.getElementById('fuelHeroCard');
+      const waterCard = document.getElementById('waterHeroCard');
+      const fuelTug = document.getElementById('fuelTugCard');
+      const waterTug = document.getElementById('waterTugCard');
+
+      if (!btnWater || !btnFuel || !fuelCard || !waterCard) return;
+
+      if (currentTopMode === 'water') {
+        btnWater.className = 'px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20';
+        btnFuel.className = 'px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 text-slate-400 hover:text-white';
+
+        // Water on top (1st), Fuel directly underneath (2nd)
+        waterCard.style.order = '1';
+        fuelCard.style.order = '2';
+        if (waterTug) waterTug.style.order = '1';
+        if (fuelTug) fuelTug.style.order = '2';
+      } else {
+        btnFuel.className = 'px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20';
+        btnWater.className = 'px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 text-slate-400 hover:text-white';
+
+        // Fuel on top (1st), Water directly underneath (2nd)
+        fuelCard.style.order = '1';
+        waterCard.style.order = '2';
+        if (fuelTug) fuelTug.style.order = '1';
+        if (waterTug) waterTug.style.order = '2';
+      }
+
+      // Ensure both are always fully visible at all times
+      fuelCard.classList.remove('hidden');
+      waterCard.classList.remove('hidden');
+      if (fuelTug) fuelTug.classList.remove('hidden');
+      if (waterTug) waterTug.classList.remove('hidden');
+
+      setTimeout(() => {
+        if (miniPieChart) miniPieChart.resize();
+        if (waterMiniPieChart) waterMiniPieChart.resize();
+        if (fuelChart) fuelChart.resize();
+        if (waterChart) waterChart.resize();
+      }, 50);
+    }
+
+    function setFuelView(view) {
+      currentFuelView = view;
+      const btn5h = document.getElementById('btn5h');
+      const btnWeekly = document.getElementById('btnWeekly');
+      if (view === '5h') {
+        btn5h.className = 'px-3 py-1 rounded-lg font-bold transition-all bg-amber-500 text-slate-950 shadow';
+        btnWeekly.className = 'px-3 py-1 rounded-lg font-bold transition-all text-slate-400 hover:text-white';
+      } else {
+        btnWeekly.className = 'px-3 py-1 rounded-lg font-bold transition-all bg-amber-500 text-slate-950 shadow';
+        btn5h.className = 'px-3 py-1 rounded-lg font-bold transition-all text-slate-400 hover:text-white';
+      }
+      if (latestData) updateFuelDisplay(latestData);
+    }
+
+    function setWaterView(view) {
+      currentWaterView = view;
+      const btn5h = document.getElementById('btnWater5h');
+      const btnWeekly = document.getElementById('btnWaterWeekly');
+      if (view === '5h') {
+        btn5h.className = 'px-3 py-1 rounded-lg font-bold transition-all bg-cyan-500 text-slate-950 shadow';
+        btnWeekly.className = 'px-3 py-1 rounded-lg font-bold transition-all text-slate-400 hover:text-white';
+      } else {
+        btnWeekly.className = 'px-3 py-1 rounded-lg font-bold transition-all bg-cyan-500 text-slate-950 shadow';
+        btn5h.className = 'px-3 py-1 rounded-lg font-bold transition-all text-slate-400 hover:text-white';
+      }
+      if (latestData) updateWaterDisplay(latestData);
+    }
+
+    function renderEvents(events) {
+      const container = document.getElementById('eventsContainer');
+      container.innerHTML = '';
+      (events || []).forEach(ev => {
+        const item = document.createElement('div');
+        const color = ev.user === 'Nathan' ? 'border-rose-500/40 text-rose-300' : (ev.user === 'Jim' ? 'border-indigo-500/40 text-indigo-300' : 'border-slate-700 text-slate-300');
+        item.className = `p-2 rounded-lg bg-slate-900/80 border text-[11px] ${color}`;
+        item.innerHTML = `
+          <div class="flex justify-between items-center text-[10px] opacity-70 mb-0.5">
+            <span class="font-bold">${ev.user}</span>
+            <span>${ev.time}</span>
+          </div>
+          <div>${ev.text}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function updateFuelDisplay(data) {
+      let pct, capacity, remainingGal, sublabel;
+
+      if (currentFuelView === '5h') {
+        pct = data.fuel.geminiRemainingPct || 76.5;
+        capacity = 500;
+        remainingGal = +(capacity * (pct / 100)).toFixed(0);
+        const mins = data.fuel.resetsInMinutes || 108;
+        sublabel = `5-Hour Sprint Tank • Resets in ${Math.floor(mins / 60)}h ${mins % 60}m`;
+        document.getElementById('fuelTicks').innerHTML = `
+          <span>[F] 500 Gal — Full Tank</span>
+          <span>[3/4] 375 Gal</span>
+          <span>[1/2] 250 Gal — Half Fuel</span>
+          <span>[1/4] 125 Gal — Low Fuel Advisory</span>
+          <span>[E] 0 Gal — Flameout</span>
+        `;
+      } else {
+        pct = data.fuel.weeklyRemainingPct || 94.0;
+        capacity = 2500;
+        remainingGal = +(capacity * (pct / 100)).toFixed(0);
+        sublabel = `Weekly Fuel Tank • Refreshes in ${data.fuel.weeklyResetsText || '2 days, 16 hours'}`;
+        document.getElementById('fuelTicks').innerHTML = `
+          <span>[F] 2,500 Gal — Full Weekly Tank</span>
+          <span>[3/4] 1,875 Gal</span>
+          <span>[1/2] 1,250 Gal — Half Fuel</span>
+          <span>[1/4] 625 Gal — Low Fuel Advisory</span>
+          <span>[E] 0 Gal — Flameout</span>
+        `;
+      }
+
+      document.getElementById('fuelModeLabel').innerText = sublabel;
+      document.getElementById('fuelRemainingGal').innerText = remainingGal + ' gal';
+      document.getElementById('fuelRemainingPct').innerText = `(${pct}% Left)`;
+
+      const fuelBody = document.getElementById('fuelBody');
+      fuelBody.style.height = pct + '%';
+      document.getElementById('fuelLaserLine').style.bottom = pct + '%';
+      document.getElementById('fuelLaserText').innerText = pct + '%';
+
+      if (pct < 25) {
+        fuelBody.classList.add('low');
+        document.getElementById('fuelBadge').className = 'text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 animate-pulse';
+        document.getElementById('fuelBadge').innerText = '🚨 Low Fuel / Flameout Risk';
+      } else {
+        fuelBody.classList.remove('low');
+        document.getElementById('fuelBadge').className = 'text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        document.getElementById('fuelBadge').innerText = 'Afterburner Active';
+      }
+
+      // Update Mini Pie Chart and Jim/Nathan Gallons
+      const jimBurn = data.fuel.jim.burnedGal || 26;
+      const nathanBurn = data.fuel.nathan.burnedGal || 91;
+      const totalBurn = jimBurn + nathanBurn;
+
+      document.getElementById('jimFuelText').innerText = `${jimBurn} gal burned`;
+      document.getElementById('nathanFuelText').innerText = `${nathanBurn} gal burned`;
+
+      const jPct = totalBurn > 0 ? Math.round((jimBurn / totalBurn) * 100) : 22;
+      const nPct = totalBurn > 0 ? Math.round((nathanBurn / totalBurn) * 100) : 78;
+
+      document.getElementById('jimFuelPct').innerText = jPct + '%';
+      document.getElementById('nathanFuelPct').innerText = nPct + '%';
+      document.getElementById('fuelMiniTotal').innerText = totalBurn + 'g';
+      document.getElementById('fuelBurnRatioHeader').innerText = `Total: ${totalBurn} gal burned`;
+
+      if (miniPieChart) {
+        miniPieChart.data.datasets[0].data = [jimBurn, nathanBurn];
+        miniPieChart.update();
+      }
+
+      // Fuel Tug of War
+      document.getElementById('jimFuelBar').style.width = jPct + '%';
+      document.getElementById('jimFuelBar').innerText = `Jim: ${jPct}%`;
+      document.getElementById('nathanFuelBar').style.width = nPct + '%';
+      document.getElementById('nathanFuelBar').innerText = `Nathan: ${nPct}%`;
+    }
+
+    function updateWaterDisplay(data) {
+      if (!data || !data.water) return;
+
+      let totalLiters, totalBottles, totalJugs, sublabel, jimLiters, jimBottles, jimPct, nathanLiters, nathanBottles, nathanPct, fillPct;
+
+      if (currentWaterView === '5h') {
+        const totalML = data.water.totalEvaporatedML || 14800;
+        totalLiters = (totalML / 1000).toFixed(2);
+        totalBottles = data.water.bottlesEvaporated || +(totalML / 500).toFixed(1);
+        totalJugs = (totalML / 18927).toFixed(2);
+        const mins = data.fuel.resetsInMinutes || 108;
+        sublabel = `5-Hour Sprint Drain • Resets in ${Math.floor(mins / 60)}h ${mins % 60}m`;
+
+        const jimML = data.water.jim.mlEvaporated || 3260;
+        jimLiters = (jimML / 1000).toFixed(2);
+        jimBottles = data.water.jim.bottles || +(jimML / 500).toFixed(1);
+        jimPct = data.water.jim.percentShare || 22;
+
+        const nathanML = data.water.nathan.mlEvaporated || 11540;
+        nathanLiters = (nathanML / 1000).toFixed(2);
+        nathanBottles = data.water.nathan.bottles || +(nathanML / 500).toFixed(1);
+        nathanPct = data.water.nathan.percentShare || 78;
+
+        // Baseline capacity 30 Liters for 5-hour sprint
+        fillPct = Math.min(95, Math.max(12, (+totalLiters / 30) * 100)).toFixed(1);
+
+        document.getElementById('waterTicks').innerHTML = `
+          <span>[MAX] 30.0 Liters — High Datacenter Drain</span>
+          <span>[3/4] 22.5 Liters (~45 Bottles)</span>
+          <span>[1/2] 15.0 Liters (~30 Bottles)</span>
+          <span>[1/4] 7.5 Liters (~15 Bottles)</span>
+          <span>[MIN] 0.0 Liters — Basin</span>
+        `;
+        document.getElementById('waterTotalBottles').innerText = `(~${totalBottles} Water Bottles)`;
+        document.getElementById('waterLaserText').innerText = `${totalLiters} L`;
+      } else {
+        const weekly = data.water.weekly || {
+          totalLiters: 156.1,
+          bottlesEvaporated: 312.2,
+          officeJugsEvaporated: 8.25,
+          jim: { liters: 22.85, bottles: 45.7, percentShare: 14.6 },
+          nathan: { liters: 133.25, bottles: 266.5, percentShare: 85.4 }
+        };
+
+        totalLiters = typeof weekly.totalLiters === 'number' ? weekly.totalLiters.toFixed(2) : weekly.totalLiters;
+        totalBottles = weekly.bottlesEvaporated;
+        totalJugs = weekly.officeJugsEvaporated;
+        sublabel = `Weekly Water Footprint • Refreshes in ${data.fuel.weeklyResetsText || '2 days, 16 hours'}`;
+
+        jimLiters = typeof weekly.jim.liters === 'number' ? weekly.jim.liters.toFixed(2) : weekly.jim.liters;
+        jimBottles = weekly.jim.bottles;
+        jimPct = Math.round(weekly.jim.percentShare);
+
+        nathanLiters = typeof weekly.nathan.liters === 'number' ? weekly.nathan.liters.toFixed(2) : weekly.nathan.liters;
+        nathanBottles = weekly.nathan.bottles;
+        nathanPct = Math.round(weekly.nathan.percentShare);
+
+        // Baseline capacity 200 Liters for weekly view
+        fillPct = Math.min(95, Math.max(12, (+totalLiters / 200) * 100)).toFixed(1);
+
+        document.getElementById('waterTicks').innerHTML = `
+          <span>[MAX] 200.0 Liters — Heavy Weekly Footprint</span>
+          <span>[3/4] 150.0 Liters (~300 Bottles / ~8 Jugs)</span>
+          <span>[1/2] 100.0 Liters (~200 Bottles / ~5 Jugs)</span>
+          <span>[1/4] 50.0 Liters (~100 Bottles / ~2.6 Jugs)</span>
+          <span>[MIN] 0.0 Liters — Basin</span>
+        `;
+        document.getElementById('waterTotalBottles').innerText = `(~${totalBottles} Bottles • ~${totalJugs} Jugs)`;
+        document.getElementById('waterLaserText').innerText = `${totalLiters} L (~${totalJugs} Jugs)`;
+      }
+
+      document.getElementById('waterModeLabel').innerText = sublabel;
+      document.getElementById('waterTotalLiters').innerText = totalLiters + ' L';
+
+      const waterBody = document.getElementById('waterBody');
+      waterBody.style.height = fillPct + '%';
+      document.getElementById('waterLaserLine').style.bottom = fillPct + '%';
+
+      // Jim & Nathan Cards
+      document.getElementById('jimWaterText').innerText = `${jimLiters} Liters`;
+      document.getElementById('jimBottlesText').innerText = `💧 ~${jimBottles} Bottles`;
+      document.getElementById('jimWaterPct').innerText = jimPct + '%';
+
+      document.getElementById('nathanWaterText').innerText = `${nathanLiters} Liters`;
+      document.getElementById('nathanBottlesText').innerText = `🌊 ~${nathanBottles} Bottles`;
+      document.getElementById('nathanWaterPct').innerText = nathanPct + '%';
+
+      // Mini Donut Chart
+      document.getElementById('waterMiniTotal').innerText = (+totalLiters).toFixed(1) + 'L';
+      if (waterMiniPieChart) {
+        waterMiniPieChart.data.datasets[0].data = [+jimLiters, +nathanLiters];
+        waterMiniPieChart.update();
+      }
+
+      // Water Tug of War Bar
+      document.getElementById('jimWaterBar').style.width = jimPct + '%';
+      document.getElementById('jimWaterBar').innerText = `Jim: ${jimPct}%`;
+      document.getElementById('nathanWaterBar').style.width = nathanPct + '%';
+      document.getElementById('nathanWaterBar').innerText = `Nathan: ${nathanPct}%`;
+      if (document.getElementById('waterBurnRatioHeader')) {
+        document.getElementById('waterBurnRatioHeader').innerText = `Total: ${totalLiters} L evaporated`;
+      }
+    }
+
+    function updateState(data) {
+      latestData = data;
+
+      // 1. FUEL UPDATE
+      updateFuelDisplay(data);
+
+      // 2. REAL PHYSICAL WATER UPDATE
+      updateWaterDisplay(data);
+
+      // Events
+      renderEvents(data.events);
+
+      // Update Charts
+      if (fuelChart && data.fuel.timeline) {
+        fuelChart.data.datasets[0].data = data.fuel.timeline.map(t => t.remainingPct);
+        fuelChart.update();
+      }
+
+      if (waterChart && data.water.sevenDayLiters) {
+        waterChart.data.datasets[0].data = data.water.sevenDayLiters.jim;
+        waterChart.data.datasets[1].data = data.water.sevenDayLiters.nathan;
+        waterChart.update();
+      }
+    }
+
+    // SSE Listener
+    function initSSE() {
+      const evtSource = new EventSource('/api/stream');
+      evtSource.onmessage = function(event) {
+        try {
+          const data = JSON.parse(event.data);
+          updateState(data);
+        } catch (e) {}
+      };
+    }
+
+    async function triggerAction(actionName) {
+      try {
+        await fetch('/api/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: actionName })
+        });
+      } catch (e) {}
+    }
+
+    function initCharts() {
+      // 0a. Mini Pie Chart for Fuel Burn
+      const miniCtx = document.getElementById('fuelMiniPie').getContext('2d');
+      miniPieChart = new Chart(miniCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Jim', 'Nathan'],
+          datasets: [{
+            data: [26, 91],
+            backgroundColor: ['#6366f1', '#f43f5e'],
+            borderWidth: 0,
+            hoverOffset: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${ctx.label}: ${ctx.raw} gal (${Math.round((ctx.raw / (26 + 91)) * 100)}%)`
+              }
+            }
+          }
+        }
+      });
+
+      // 0b. Mini Pie Chart for Water Consumption
+      const waterMiniCtx = document.getElementById('waterMiniPie').getContext('2d');
+      waterMiniPieChart = new Chart(waterMiniCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Jim', 'Nathan'],
+          datasets: [{
+            data: [3.26, 11.54],
+            backgroundColor: ['#6366f1', '#f43f5e'],
+            borderWidth: 0,
+            hoverOffset: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const d = ctx.dataset.data;
+                  const total = (d[0] + d[1]) || 1;
+                  return ` ${ctx.label}: ${ctx.raw} L (${Math.round((ctx.raw / total) * 100)}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // 1. Fuel Depletion Chart
+      const fuelCtx = document.getElementById('fuelCurveChart').getContext('2d');
+      fuelChart = new Chart(fuelCtx, {
+        type: 'line',
+        data: {
+          labels: ['5h ago', '4h ago', '3h ago', '2h ago', '1h ago', 'Now'],
+          datasets: [{
+            label: 'Fuel Tank Remaining (%)',
+            data: [100, 91, 72, 54, 42, 76.5],
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.12)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2.5,
+            pointBackgroundColor: '#f59e0b',
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { min: 0, max: 100, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8', callback: v => v + '%' } },
+            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // 2. 7-Day Real Physical Liters (Untouched)
+      const waterCtx = document.getElementById('waterHistoryChart').getContext('2d');
+      waterChart = new Chart(waterCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Today'],
+          datasets: [
+            {
+              label: 'Jim (Liters)',
+              data: [3.8, 4.2, 2.6, 1.8, 4.5, 3.1, 2.85],
+              backgroundColor: '#6366f1',
+              borderRadius: 6
+            },
+            {
+              label: 'Nathan (Liters)',
+              data: [18.4, 24.2, 14.8, 12.5, 29.6, 22.1, 11.65],
+              backgroundColor: '#f43f5e',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { display: false }, ticks: { color: '#94a3b8' } },
+            y: { stacked: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#94a3b8', callback: v => v + ' L' } }
+          },
+          plugins: {
+            legend: { labels: { color: '#94a3b8', boxWidth: 10, font: { size: 10 } } }
+          }
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initCharts();
+      applyInteractiveVisibility();
+      initSSE();
+      fetch('/api/status').then(r => r.json()).then(data => updateState(data));
+    });
+  </script>
+</body>
+</html>

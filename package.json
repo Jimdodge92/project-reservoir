@@ -1,0 +1,17 @@
+{
+  "name": "project-reservoir",
+  "version": "1.0.0",
+  "description": "🚰 Project Reservoir: Google AI Ultra Shared Quota & Datacenter Cooling Water Monitor for Jim and Nathan",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "antigravity",
+    "google-ai-ultra",
+    "quota-monitor",
+    "telemetry"
+  ],
+  "author": "Jim",
+  "license": "MIT"
+}
