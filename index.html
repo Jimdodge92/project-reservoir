@@ -974,11 +974,15 @@
         })
         .then(data => updateState(data))
         .catch(() => {
-          // Static host (e.g. GitHub Pages) fallback
-          fetch('./telemetry.json')
-            .then(r => r.json())
-            .then(data => updateState(data))
-            .catch(() => {});
+          // Static host (e.g. GitHub Pages) fallback with cache-busting & 60s auto-refresh
+          function fetchStaticSnapshot() {
+            fetch('./telemetry.json?_t=' + Date.now())
+              .then(r => r.json())
+              .then(data => updateState(data))
+              .catch(() => {});
+          }
+          fetchStaticSnapshot();
+          setInterval(fetchStaticSnapshot, 60000);
         });
     });
   </script>
