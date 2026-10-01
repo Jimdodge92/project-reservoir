@@ -2,30 +2,30 @@
   "userName": "Jim",
   "brotherName": "Nathan",
   "syncIntervalSec": 5,
-  "lastLiveSync": "8:56:16 AM",
+  "lastLiveSync": "2:08:03 PM",
   "livePlan": "Google AI Ultra",
   "availableCredits": 640,
   "fuel": {
     "capacityGal": 500,
-    "currentGal": 484,
-    "totalBurnedGal": 16,
+    "currentGal": 455,
+    "totalBurnedGal": 45,
     "burnRateGPH": 14.8,
-    "resetsInMinutes": 108,
-    "geminiRemainingPct": 96.8,
-    "claudeRemainingPct": 100,
-    "weeklyRemainingPct": 94,
+    "resetsInMinutes": 142,
+    "geminiRemainingPct": 91,
+    "claudeRemainingPct": 97.4,
+    "weeklyRemainingPct": 93,
     "weeklyCapacityGal": 2500,
-    "weeklyCurrentGal": 2350,
-    "weeklyTotalBurnedGal": 150,
-    "weeklyResetsText": "2 days, 16 hours",
+    "weeklyCurrentGal": 2325,
+    "weeklyTotalBurnedGal": 175,
+    "weeklyResetsText": "2 days",
     "jim": {
-      "burnedGal": 12,
+      "burnedGal": 30,
       "mode": "Eco-Cruise (42 MPG)",
       "speed": "Mach 0.8 (Subsonic)",
       "status": "🟢 Fuel Efficient"
     },
     "nathan": {
-      "burnedGal": 4,
+      "burnedGal": 15,
       "mode": "🔥 Twin Afterburners (6 GPH)",
       "speed": "Mach 3.2 (Supersonic)",
       "status": "🚨 Active Quota Burn"
@@ -37,62 +37,62 @@
       },
       {
         "label": "4h ago",
-        "remainingPct": 94
+        "remainingPct": 97
       },
       {
         "label": "3h ago",
-        "remainingPct": 88
+        "remainingPct": 95
       },
       {
         "label": "2h ago",
-        "remainingPct": 83
+        "remainingPct": 93
       },
       {
         "label": "1h ago",
-        "remainingPct": 79
+        "remainingPct": 92
       },
       {
         "label": "Now",
-        "remainingPct": 96.8
+        "remainingPct": 91
       }
     ]
   },
   "water": {
-    "totalEvaporatedML": 2016,
-    "bottlesEvaporated": 4,
-    "officeJugsEvaporated": 0.11,
+    "totalEvaporatedML": 46820,
+    "bottlesEvaporated": 93.6,
+    "officeJugsEvaporated": 2.47,
     "jim": {
-      "mlEvaporated": 1512,
-      "bottles": 3,
+      "mlEvaporated": 31620,
+      "bottles": 63.2,
       "cupsOfCoffee": 12,
-      "percentShare": 75,
+      "percentShare": 67.5,
       "description": "💧 Sipping a glass of water"
     },
     "nathan": {
-      "mlEvaporated": 504,
-      "bottles": 1,
+      "mlEvaporated": 15200,
+      "bottles": 30.4,
       "cupsOfCoffee": 48.5,
-      "percentShare": 25,
+      "percentShare": 32.5,
       "description": "🌊 Evaporating cooling towers on high compute"
     },
     "sevenDayLiters": {
       "labels": [
-        "Thu",
         "Fri",
         "Sat",
         "Sun",
         "Mon",
         "Tue",
+        "Wed",
         "Today"
       ],
       "jim": [
-        3.8,
-        4.2,
-        2.6,
-        1.8,
-        4.5,
-        3.1,
-        1.51
+        0,
+        25.26,
+        90.54,
+        0,
+        0,
+        6.36,
+        65.64
       ],
       "nathan": [
         18.4,
@@ -101,37 +101,37 @@
         12.5,
         29.6,
         22.1,
-        0.5
+        15.2
       ]
     },
     "weekly": {
-      "totalEvaporatedML": 143610,
-      "totalLiters": 143.61,
-      "bottlesEvaporated": 287.2,
-      "officeJugsEvaporated": 7.59,
+      "totalEvaporatedML": 324600,
+      "totalLiters": 324.6,
+      "bottlesEvaporated": 649.2,
+      "officeJugsEvaporated": 17.15,
       "jim": {
-        "liters": 21.51,
-        "bottles": 43,
-        "percentShare": 15
+        "liters": 187.8,
+        "bottles": 375.6,
+        "percentShare": 57.9
       },
       "nathan": {
-        "liters": 122.1,
-        "bottles": 244.2,
-        "percentShare": 85
+        "liters": 136.8,
+        "bottles": 273.6,
+        "percentShare": 42.1
       }
     }
   },
   "localTelemetry": {
-    "promptsToday": 181,
-    "stepsToday": 3929,
-    "lastScanned": "2026-10-01T13:56:16.329Z"
+    "promptsToday": 54,
+    "stepsToday": 1094,
+    "lastScanned": "2026-10-01T19:08:03.548Z"
   },
   "events": [
     {
       "id": 1,
       "time": "Just now",
       "user": "System",
-      "text": "⚡ Live 5-Second Google Quota Poller Active",
+      "text": "⚡ Live 5-Second Real-Time Telemetry & Google Quota Sync Active",
       "type": "system"
     }
   ]

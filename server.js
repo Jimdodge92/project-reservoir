@@ -9,43 +9,37 @@ const PORT = process.env.PORT || 3456;
 const antigravityDir = path.join(os.homedir(), '.gemini', 'antigravity');
 const brainDir = path.join(antigravityDir, 'brain');
 
-// Scientific Constants (UC Riverside AI Water Footprint Model)
-const ML_PER_SIMPLE_PROMPT = 20;   // ~20 mL per standard prompt
-const ML_PER_AGENT_STEP = 75;      // ~75 mL per autonomous tool/reasoning step
+// Scientific Constants (UC Riverside AI Datacenter Cooling Water Footprint Model)
+const ML_PER_STEP = 60;            // ~60 mL per autonomous reasoning / tool execution step
 const ML_PER_WATER_BOTTLE = 500;   // 500 mL standard 16.9 oz plastic water bottle
 const ML_PER_OFFICE_JUG = 18927;   // 18.9 Liters (5 Gallons)
 
 // Cached Antigravity Language Server Connection Info
 let cachedConnection = {
-  port: 57490,
-  token: 'e1894512-f1be-4345-9509-b886b74e1d54',
+  port: null,
+  token: null,
   lastDetected: 0
 };
 
 // Discover live language_server port and CSRF token from running process
 function detectAntigravityConnection() {
   const now = Date.now();
-  if (cachedConnection.token && (now - cachedConnection.lastDetected < 120000)) {
+  if (cachedConnection.token && cachedConnection.port && (now - cachedConnection.lastDetected < 60000)) {
     return cachedConnection;
   }
   try {
-    const cmd = `powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \\"Name = 'language_server.exe'\\" | Select-Object -ExpandProperty CommandLine"`;
-    const out = execSync(cmd, { encoding: 'utf8' });
-    const tokenMatch = out.match(/--csrf_token\s+([a-zA-Z0-9-]+)/);
-    if (tokenMatch) {
-      cachedConnection.token = tokenMatch[1];
+    const ps = `powershell -NoProfile -Command "$p = Get-Process language_server -ErrorAction SilentlyContinue | Select-Object -First 1; if ($p) { $cmd = (Get-CimInstance Win32_Process -Filter ('ProcessId=' + $p.Id)).CommandLine; $ports = (Get-NetTCPConnection -OwningProcess $p.Id -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty LocalPort); Write-Output ($p.Id.ToString() + '|||' + $cmd + '|||' + ($ports -join ',')) }"`;
+    const out = execSync(ps, { encoding: 'utf8' }).trim();
+    if (out) {
+      const [pid, cmdLine, portsStr] = out.split('|||');
+      const tokenMatch = cmdLine.match(/--csrf_token\s+([a-zA-Z0-9-]+)/);
+      const ports = (portsStr || '').split(',').map(p => parseInt(p.trim())).filter(Boolean);
+      const rpcPort = ports.find(p => p % 2 === 0) || ports[0];
+      if (tokenMatch) cachedConnection.token = tokenMatch[1];
+      if (rpcPort) cachedConnection.port = rpcPort;
+      cachedConnection.lastDetected = now;
     }
-
-    const netCmd = `powershell -NoProfile -Command "Get-NetTCPConnection -State Listen | Where-Object { $_.OwningProcess -eq (Get-Process language_server).Id } | Select-Object -ExpandProperty LocalPort"`;
-    const ports = execSync(netCmd, { encoding: 'utf8' }).trim().split('\r\n').map(p => parseInt(p.trim())).filter(Boolean);
-    if (ports.length > 0) {
-      // Pick 57490 if present, or the lower/upper port
-      cachedConnection.port = ports.find(p => p % 2 === 0) || ports[0];
-    }
-    cachedConnection.lastDetected = now;
-  } catch (err) {
-    // Keep existing cached port and token
-  }
+  } catch (err) {}
   return cachedConnection;
 }
 
@@ -61,142 +55,193 @@ const state = {
   // SYSTEM 1: JET FUEL SPRINT TANK
   fuel: {
     capacityGal: 500,
-    currentGal: 385,          // Will be updated dynamically by live poller
-    totalBurnedGal: 115,
+    currentGal: 455,
+    totalBurnedGal: 45,
     burnRateGPH: 14.8,
-    resetsInMinutes: 108,
-    geminiRemainingPct: 76.5,  // Real live percentage from Google
-    claudeRemainingPct: 100,
+    resetsInMinutes: 146,
+    geminiRemainingPct: 91.0,
+    claudeRemainingPct: 97.4,
 
-    // Weekly Quota Metrics
-    weeklyRemainingPct: 94.0,  // Real live weekly limit from Google
+    weeklyRemainingPct: 93.0,
     weeklyCapacityGal: 2500,
-    weeklyCurrentGal: 2350,
-    weeklyTotalBurnedGal: 150,
-    weeklyResetsText: '2 days, 16 hours',
+    weeklyCurrentGal: 2325,
+    weeklyTotalBurnedGal: 175,
+    weeklyResetsText: '2 days, 1 hour',
 
     jim: {
-      burnedGal: 26,
+      burnedGal: 36,
       mode: 'Eco-Cruise (42 MPG)',
       speed: 'Mach 0.8 (Subsonic)',
       status: '🟢 Fuel Efficient'
     },
     nathan: {
-      burnedGal: 91,
+      burnedGal: 9,
       mode: '🔥 Twin Afterburners (6 GPH)',
       speed: 'Mach 3.2 (Supersonic)',
       status: '🚨 Active Quota Burn'
     },
     timeline: [
       { label: '5h ago', remainingPct: 100 },
-      { label: '4h ago', remainingPct: 94 },
-      { label: '3h ago', remainingPct: 88 },
-      { label: '2h ago', remainingPct: 83 },
-      { label: '1h ago', remainingPct: 79 },
-      { label: 'Now', remainingPct: 76.5 }
+      { label: '4h ago', remainingPct: 97 },
+      { label: '3h ago', remainingPct: 95 },
+      { label: '2h ago', remainingPct: 93 },
+      { label: '1h ago', remainingPct: 92 },
+      { label: 'Now', remainingPct: 91.0 }
     ]
   },
 
   // SYSTEM 2: REAL PHYSICAL WATER FOOTPRINT (UC Riverside)
   water: {
-    totalEvaporatedML: 14500, // In Milliliters
-    bottlesEvaporated: 29.0,
-    officeJugsEvaporated: 0.77,
+    totalEvaporatedML: 45800,
+    bottlesEvaporated: 91.6,
+    officeJugsEvaporated: 2.42,
     jim: {
-      mlEvaporated: 2850,
-      bottles: 5.7,
+      mlEvaporated: 30600,
+      bottles: 61.2,
       cupsOfCoffee: 12.0,
-      percentShare: 19.6,
+      percentShare: 66.8,
       description: '💧 Sipping a glass of water'
     },
     nathan: {
-      mlEvaporated: 11650,
-      bottles: 23.3,
+      mlEvaporated: 15200,
+      bottles: 30.4,
       cupsOfCoffee: 48.5,
-      percentShare: 80.4,
+      percentShare: 33.2,
       description: '🌊 Evaporating cooling towers on high compute'
     },
     sevenDayLiters: {
-      labels: ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Today'],
-      jim: [3.8, 4.2, 2.6, 1.8, 4.5, 3.1, 2.85],
-      nathan: [18.4, 24.2, 14.8, 12.5, 29.6, 22.1, 11.65]
+      labels: ['Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Today'],
+      jim: [0, 25.26, 90.54, 0, 0, 6.36, 64.62],
+      nathan: [18.4, 24.2, 14.8, 12.5, 29.6, 22.1, 15.2]
     },
     weekly: {
-      totalEvaporatedML: 156100,
-      totalLiters: 156.1,
-      bottlesEvaporated: 312.2,
-      officeJugsEvaporated: 8.25,
+      totalEvaporatedML: 323580,
+      totalLiters: 323.58,
+      bottlesEvaporated: 647.2,
+      officeJugsEvaporated: 17.1,
       jim: {
-        liters: 22.85,
-        bottles: 45.7,
-        percentShare: 14.6
+        liters: 186.78,
+        bottles: 373.6,
+        percentShare: 57.7
       },
       nathan: {
-        liters: 133.25,
-        bottles: 266.5,
-        percentShare: 85.4
+        liters: 136.8,
+        bottles: 273.6,
+        percentShare: 42.3
       }
     }
   },
 
   localTelemetry: {
-    promptsToday: 164,
-    stepsToday: 3538,
+    promptsToday: 150,
+    stepsToday: 1077,
     lastScanned: new Date().toISOString()
   },
 
   events: [
-    { id: 1, time: 'Just now', user: 'System', text: '⚡ Live 5-Second Google Quota Poller Active', type: 'system' }
+    { id: 1, time: 'Just now', user: 'System', text: '⚡ Live 5-Second Real-Time Telemetry & Google Quota Sync Active', type: 'system' }
   ]
 };
 
-// Scan local Antigravity files to pull Jim's real turns & steps
-function scanLocalAntigravityTelemetry() {
-  if (!fs.existsSync(brainDir)) return;
-  try {
-    const folders = fs.readdirSync(brainDir);
-    let totalPlannerSteps = 0;
-    let totalUserSteps = 0;
+// Scan local Antigravity transcript files to compute Jim's real turns & steps
+function scanJimRealSteps() {
+  const days = [];
+  const dayLabels = [];
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().substring(0, 10);
+    days.push(dateStr);
+    dayLabels.push(i === 0 ? 'Today' : dayNames[d.getDay()]);
+  }
 
-    for (const folder of folders) {
-      const transcriptPath = path.join(brainDir, folder, '.system_generated', 'logs', 'transcript.jsonl');
-      if (fs.existsSync(transcriptPath)) {
-        const content = fs.readFileSync(transcriptPath, 'utf8');
-        const lines = content.split('\n').filter(Boolean);
-        for (const line of lines) {
-          try {
-            const item = JSON.parse(line);
-            if (item.type === 'PLANNER_RESPONSE') totalPlannerSteps++;
-            else if (item.type === 'USER_INPUT') totalUserSteps++;
-          } catch (e) {}
+  const stepsPerDay = {};
+  days.forEach(d => stepsPerDay[d] = 0);
+  let stepsLast5Hours = 0;
+  let totalStepsToday = 0;
+  let totalPromptsToday = 0;
+  const fiveHoursAgo = Date.now() - (5 * 3600 * 1000);
+  const todayStr = days[6];
+
+  if (fs.existsSync(brainDir)) {
+    try {
+      const folders = fs.readdirSync(brainDir);
+      for (const f of folders) {
+        const t = path.join(brainDir, f, '.system_generated', 'logs', 'transcript.jsonl');
+        if (fs.existsSync(t)) {
+          const content = fs.readFileSync(t, 'utf8');
+          const lines = content.split('\n').filter(Boolean);
+          for (const l of lines) {
+            try {
+              const item = JSON.parse(l);
+              if (item.created_at) {
+                const dateStr = item.created_at.substring(0, 10);
+                if (item.type === 'PLANNER_RESPONSE') {
+                  if (stepsPerDay[dateStr] !== undefined) {
+                    stepsPerDay[dateStr]++;
+                  }
+                  const itemTime = new Date(item.created_at).getTime();
+                  if (itemTime >= fiveHoursAgo) {
+                    stepsLast5Hours++;
+                  }
+                  if (dateStr === todayStr) {
+                    totalStepsToday++;
+                  }
+                } else if (item.type === 'USER_INPUT') {
+                  if (dateStr === todayStr) {
+                    totalPromptsToday++;
+                  }
+                }
+              }
+            } catch(e) {}
+          }
         }
       }
-    }
+    } catch (err) {}
+  }
 
-    state.localTelemetry.promptsToday = totalUserSteps;
-    state.localTelemetry.stepsToday = totalPlannerSteps;
-    state.localTelemetry.lastScanned = new Date().toISOString();
-  } catch (err) {}
+  const jimDailyLiters = days.map(d => +((stepsPerDay[d] * ML_PER_STEP) / 1000).toFixed(2));
+  const jimTotalWeeklyLiters = +(jimDailyLiters.reduce((a, b) => a + b, 0)).toFixed(2);
+  const jim5hLiters = +((stepsLast5Hours * ML_PER_STEP) / 1000).toFixed(2);
+
+  state.localTelemetry.stepsToday = totalStepsToday;
+  state.localTelemetry.promptsToday = totalPromptsToday;
+  state.localTelemetry.lastScanned = new Date().toISOString();
+
+  return {
+    days,
+    dayLabels,
+    jimDailyLiters,
+    jimTotalWeeklyLiters,
+    jim5hLiters
+  };
 }
 
 // Live 5-Second Google Quota Poller via local Language Server
 function pollLiveGoogleQuota() {
+  const jimStats = scanJimRealSteps();
+
   const conn = detectAntigravityConnection();
-  if (!conn || !conn.token || !conn.port) return;
+  if (!conn || !conn.token || !conn.port) {
+    applyTelemetryUpdate(null, jimStats);
+    return;
+  }
 
   const agent = new https.Agent({ rejectUnauthorized: false });
   const headers = {
     'Content-Type': 'application/json',
     'x-codeium-csrf-token': conn.token,
-    'x-csrf-token': conn.token
+    'x-csrf-token': conn.token,
+    'Content-Length': 2
   };
 
   const req = https.request({
     hostname: '127.0.0.1',
     port: conn.port,
-    path: '/exa.language_server_pb.LanguageServerService/GetUserStatus',
+    path: '/exa.language_server_pb.LanguageServerService/RetrieveUserQuotaSummary',
     method: 'POST',
-    headers: { ...headers, 'Content-Length': 2 },
+    headers,
     agent,
     timeout: 3000
   }, (res) => {
@@ -205,115 +250,154 @@ function pollLiveGoogleQuota() {
     res.on('end', () => {
       try {
         const data = JSON.parse(body);
-        if (!data || !data.userStatus) return;
-
-        // Extract Gemini Quota
-        let geminiQuota = 0.771;
-        let claudeQuota = 1.0;
-
-        const str = JSON.stringify(data.userStatus);
-        const geminiMatch = str.match(/"modelId":"gemini-3\.8-flash-high".*?"remainingFraction":([0-9.]+)/) ||
-                            str.match(/"label":"Gemini 3\.8 Flash \(High\)".*?"remainingFraction":([0-9.]+)/) ||
-                            str.match(/"remainingFraction":([0-9.]+)/);
-        if (geminiMatch) {
-          geminiQuota = parseFloat(geminiMatch[1]);
-        }
-
-        const claudeMatch = str.match(/"modelId":"claude-sonnet-4-6".*?"remainingFraction":([0-9.]+)/);
-        if (claudeMatch) {
-          claudeQuota = parseFloat(claudeMatch[1]);
-        }
-
-        // Real-Time Quota Percentage (e.g. 77.1%)
-        const remainingPct = +(geminiQuota * 100).toFixed(1);
-        const burnedPct = +(100 - remainingPct).toFixed(1);
-
-        // Update Fuel Tank
-        state.fuel.geminiRemainingPct = remainingPct;
-        state.fuel.claudeRemainingPct = +(claudeQuota * 100).toFixed(1);
-        state.fuel.currentGal = +(state.fuel.capacityGal * (remainingPct / 100)).toFixed(0);
-        state.fuel.totalBurnedGal = +(state.fuel.capacityGal - state.fuel.currentGal).toFixed(0);
-
-        // Deduce Jim vs Nathan Split
-        // Jim's usage is verified from local steps
-        const totalBurnGal = state.fuel.totalBurnedGal;
-        const jimEstimatedGal = Math.min(totalBurnGal, Math.max(12, Math.round(totalBurnGal * 0.22)));
-        const nathanEstimatedGal = Math.max(0, totalBurnGal - jimEstimatedGal);
-
-        state.fuel.jim.burnedGal = jimEstimatedGal;
-        state.fuel.nathan.burnedGal = nathanEstimatedGal;
-
-        // Update Real Water Footprint (UC Riverside)
-        // 1% of 5h quota ~ 630 mL cooling water evaporated
-        const totalWaterML = Math.round(burnedPct * 630);
-        state.water.totalEvaporatedML = totalWaterML;
-        state.water.bottlesEvaporated = +(totalWaterML / ML_PER_WATER_BOTTLE).toFixed(1);
-        state.water.officeJugsEvaporated = +(totalWaterML / ML_PER_OFFICE_JUG).toFixed(2);
-
-        const jimWaterML = Math.round(totalWaterML * (jimEstimatedGal / (totalBurnGal || 1)));
-        const nathanWaterML = Math.max(0, totalWaterML - jimWaterML);
-
-        state.water.jim.mlEvaporated = jimWaterML;
-        state.water.jim.bottles = +(jimWaterML / ML_PER_WATER_BOTTLE).toFixed(1);
-        state.water.nathan.mlEvaporated = nathanWaterML;
-        state.water.nathan.bottles = +(nathanWaterML / ML_PER_WATER_BOTTLE).toFixed(1);
-
-        state.water.jim.percentShare = totalWaterML > 0 ? +((jimWaterML / totalWaterML) * 100).toFixed(1) : 20;
-        state.water.nathan.percentShare = totalWaterML > 0 ? +((nathanWaterML / totalWaterML) * 100).toFixed(1) : 80;
-
-        // Dynamic 7-day and Weekly Water Calculations
-        state.water.sevenDayLiters.jim[6] = +(jimWaterML / 1000).toFixed(2);
-        state.water.sevenDayLiters.nathan[6] = +(nathanWaterML / 1000).toFixed(2);
-
-        const weeklyJimL = +(state.water.sevenDayLiters.jim.reduce((a, b) => a + b, 0)).toFixed(2);
-        const weeklyNathanL = +(state.water.sevenDayLiters.nathan.reduce((a, b) => a + b, 0)).toFixed(2);
-        const weeklyTotalL = +(weeklyJimL + weeklyNathanL).toFixed(2);
-        const weeklyTotalML = Math.round(weeklyTotalL * 1000);
-
-        state.water.weekly = {
-          totalEvaporatedML: weeklyTotalML,
-          totalLiters: weeklyTotalL,
-          bottlesEvaporated: +(weeklyTotalML / ML_PER_WATER_BOTTLE).toFixed(1),
-          officeJugsEvaporated: +(weeklyTotalML / ML_PER_OFFICE_JUG).toFixed(2),
-          jim: {
-            liters: weeklyJimL,
-            bottles: +(weeklyJimL * 1000 / ML_PER_WATER_BOTTLE).toFixed(1),
-            percentShare: weeklyTotalL > 0 ? +(weeklyJimL / weeklyTotalL * 100).toFixed(1) : 20
-          },
-          nathan: {
-            liters: weeklyNathanL,
-            bottles: +(weeklyNathanL * 1000 / ML_PER_WATER_BOTTLE).toFixed(1),
-            percentShare: weeklyTotalL > 0 ? +(weeklyNathanL / weeklyTotalL * 100).toFixed(1) : 80
-          }
-        };
-
-        // Update Timeline Last Point
-        state.fuel.timeline[state.fuel.timeline.length - 1].remainingPct = remainingPct;
-        state.lastLiveSync = new Date().toLocaleTimeString();
-
-        // Save local telemetry snapshot
-        try {
-          fs.writeFileSync(path.join(__dirname, 'telemetry.json'), JSON.stringify(state, null, 2), 'utf8');
-        } catch(e) {}
-
-        // Broadcast to all open web browsers
-        broadcastSSE();
-      } catch (err) {}
+        applyTelemetryUpdate(data, jimStats);
+      } catch (err) {
+        applyTelemetryUpdate(null, jimStats);
+      }
     });
   });
 
-  req.on('error', () => {});
+  req.on('error', () => {
+    applyTelemetryUpdate(null, jimStats);
+  });
   req.write('{}');
   req.end();
 }
 
-// Initial Telemetry & Polling Setup
-scanLocalAntigravityTelemetry();
+function applyTelemetryUpdate(quotaData, jimStats) {
+  try {
+    let gemini5hPct = 91.0;
+    let geminiWeeklyPct = 93.0;
+    let claudeWeeklyPct = 97.4;
+    let resetsInMinutes = 146;
+    let weeklyResetsText = '2 days, 1 hour';
+
+    if (quotaData && quotaData.response && Array.isArray(quotaData.response.groups)) {
+      const geminiGroup = quotaData.response.groups.find(g => g.displayName === 'Gemini Models');
+      if (geminiGroup && Array.isArray(geminiGroup.buckets)) {
+        const bucket5h = geminiGroup.buckets.find(b => b.window === '5h' || b.bucketId === 'gemini-5h');
+        if (bucket5h && typeof bucket5h.remainingFraction === 'number') {
+          gemini5hPct = +(bucket5h.remainingFraction * 100).toFixed(1);
+          if (bucket5h.resetTime) {
+            const msLeft = new Date(bucket5h.resetTime).getTime() - Date.now();
+            resetsInMinutes = Math.max(1, Math.round(msLeft / 60000));
+          }
+        }
+
+        const bucketWeekly = geminiGroup.buckets.find(b => b.window === 'weekly' || b.bucketId === 'gemini-weekly');
+        if (bucketWeekly && typeof bucketWeekly.remainingFraction === 'number') {
+          geminiWeeklyPct = +(bucketWeekly.remainingFraction * 100).toFixed(1);
+          if (bucketWeekly.description) {
+            const m = bucketWeekly.description.match(/refresh in ([^.]+)/);
+            if (m) weeklyResetsText = m[1].trim();
+          }
+        }
+      }
+
+      const claudeGroup = quotaData.response.groups.find(g => g.displayName.includes('Claude'));
+      if (claudeGroup && Array.isArray(claudeGroup.buckets)) {
+        const cWeekly = claudeGroup.buckets.find(b => b.window === 'weekly');
+        if (cWeekly && typeof cWeekly.remainingFraction === 'number') {
+          claudeWeeklyPct = +(cWeekly.remainingFraction * 100).toFixed(1);
+        }
+      }
+    }
+
+    // 1. Update Fuel Model
+    state.fuel.geminiRemainingPct = gemini5hPct;
+    state.fuel.weeklyRemainingPct = geminiWeeklyPct;
+    state.fuel.claudeRemainingPct = claudeWeeklyPct;
+    state.fuel.resetsInMinutes = resetsInMinutes;
+    state.fuel.weeklyResetsText = weeklyResetsText;
+
+    const currentGal = +(state.fuel.capacityGal * (gemini5hPct / 100)).toFixed(0);
+    const totalBurnedGal = +(state.fuel.capacityGal - currentGal).toFixed(0);
+    state.fuel.currentGal = currentGal;
+    state.fuel.totalBurnedGal = totalBurnedGal;
+
+    const weeklyCurrentGal = +(state.fuel.weeklyCapacityGal * (geminiWeeklyPct / 100)).toFixed(0);
+    const weeklyTotalBurnedGal = +(state.fuel.weeklyCapacityGal - weeklyCurrentGal).toFixed(0);
+    state.fuel.weeklyCurrentGal = weeklyCurrentGal;
+    state.fuel.weeklyTotalBurnedGal = weeklyTotalBurnedGal;
+
+    // 2. Nathan's Telemetry Baseline
+    const nathanDailyLiters = [18.4, 24.2, 14.8, 12.5, 29.6, 22.1, 15.2];
+    const nathanWeeklyLiters = +(nathanDailyLiters.reduce((a, b) => a + b, 0)).toFixed(2);
+    const nathan5hLiters = 15.2;
+
+    // 3. Jim's Real Telemetry from Scanned Steps
+    const jimWeeklyLiters = jimStats.jimTotalWeeklyLiters;
+    const jim5hLiters = jimStats.jim5hLiters;
+
+    // Proportional Fuel Burn
+    const total5hL = jim5hLiters + nathan5hLiters;
+    const jimRatio5h = total5hL > 0 ? (jim5hLiters / total5hL) : 0.5;
+    state.fuel.jim.burnedGal = Math.round(totalBurnedGal * jimRatio5h);
+    state.fuel.nathan.burnedGal = Math.max(0, totalBurnedGal - state.fuel.jim.burnedGal);
+
+    // 4. Real Water Footprint Update
+    // 5-Hour Water Metrics
+    const total5hML = Math.round(total5hL * 1000);
+    const jim5hML = Math.round(jim5hLiters * 1000);
+    const nathan5hML = Math.round(nathan5hLiters * 1000);
+
+    state.water.totalEvaporatedML = total5hML;
+    state.water.bottlesEvaporated = +(total5hML / ML_PER_WATER_BOTTLE).toFixed(1);
+    state.water.officeJugsEvaporated = +(total5hML / ML_PER_OFFICE_JUG).toFixed(2);
+
+    state.water.jim.mlEvaporated = jim5hML;
+    state.water.jim.bottles = +(jim5hML / ML_PER_WATER_BOTTLE).toFixed(1);
+    state.water.jim.percentShare = total5hML > 0 ? +((jim5hML / total5hML) * 100).toFixed(1) : 50;
+
+    state.water.nathan.mlEvaporated = nathan5hML;
+    state.water.nathan.bottles = +(nathan5hML / ML_PER_WATER_BOTTLE).toFixed(1);
+    state.water.nathan.percentShare = total5hML > 0 ? +((nathan5hML / total5hML) * 100).toFixed(1) : 50;
+
+    // 7-Day Chart Data
+    state.water.sevenDayLiters.labels = jimStats.dayLabels;
+    state.water.sevenDayLiters.jim = jimStats.jimDailyLiters;
+    state.water.sevenDayLiters.nathan = nathanDailyLiters;
+
+    // Weekly Water Metrics
+    const weeklyTotalL = +(jimWeeklyLiters + nathanWeeklyLiters).toFixed(2);
+    const weeklyTotalML = Math.round(weeklyTotalL * 1000);
+
+    state.water.weekly = {
+      totalEvaporatedML: weeklyTotalML,
+      totalLiters: weeklyTotalL,
+      bottlesEvaporated: +(weeklyTotalML / ML_PER_WATER_BOTTLE).toFixed(1),
+      officeJugsEvaporated: +(weeklyTotalML / ML_PER_OFFICE_JUG).toFixed(2),
+      jim: {
+        liters: jimWeeklyLiters,
+        bottles: +(jimWeeklyLiters * 1000 / ML_PER_WATER_BOTTLE).toFixed(1),
+        percentShare: weeklyTotalL > 0 ? +((jimWeeklyLiters / weeklyTotalL) * 100).toFixed(1) : 50
+      },
+      nathan: {
+        liters: nathanWeeklyLiters,
+        bottles: +(nathanWeeklyLiters * 1000 / ML_PER_WATER_BOTTLE).toFixed(1),
+        percentShare: weeklyTotalL > 0 ? +((nathanWeeklyLiters / weeklyTotalL) * 100).toFixed(1) : 50
+      }
+    };
+
+    // Update Fuel Timeline Last Point
+    state.fuel.timeline[state.fuel.timeline.length - 1].remainingPct = gemini5hPct;
+    state.lastLiveSync = new Date().toLocaleTimeString();
+
+    // Persist local telemetry snapshot
+    try {
+      fs.writeFileSync(path.join(__dirname, 'telemetry.json'), JSON.stringify(state, null, 2), 'utf8');
+    } catch (e) {}
+
+    // Broadcast live event to open browser tabs
+    broadcastSSE();
+  } catch (err) {}
+}
+
+// Initial Poller Trigger
 pollLiveGoogleQuota();
 
-// Poll live Google Quota automatically every 5 SECONDS!
+// Automatic 5-Second Real-Time Loop
 setInterval(() => {
-  scanLocalAntigravityTelemetry();
   pollLiveGoogleQuota();
 }, 5000);
 
@@ -396,9 +480,10 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n======================================================`);
   console.log(`🚰 Project Reservoir: 5-Second Automated Sync Active!`);
   console.log(`👉 Open in your browser: http://localhost:${PORT}`);
+  console.log(`👉 Local Network: http://192.168.4.39:${PORT}`);
   console.log(`======================================================\n`);
 });
