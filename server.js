@@ -291,6 +291,11 @@ function pollLiveGoogleQuota() {
         state.fuel.timeline[state.fuel.timeline.length - 1].remainingPct = remainingPct;
         state.lastLiveSync = new Date().toLocaleTimeString();
 
+        // Save local telemetry snapshot
+        try {
+          fs.writeFileSync(path.join(__dirname, 'telemetry.json'), JSON.stringify(state, null, 2), 'utf8');
+        } catch(e) {}
+
         // Broadcast to all open web browsers
         broadcastSSE();
       } catch (err) {}
