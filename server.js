@@ -204,6 +204,7 @@ function scanJimRealSteps() {
   const jimDailyLiters = days.map(d => +((stepsPerDay[d] * ML_PER_STEP) / 1000).toFixed(2));
   const jimTotalWeeklyLiters = +(jimDailyLiters.reduce((a, b) => a + b, 0)).toFixed(2);
   const jim5hLiters = +((stepsLast5Hours * ML_PER_STEP) / 1000).toFixed(2);
+  const jimWeeklySteps = Object.values(stepsPerDay).reduce((a, b) => a + b, 0);
 
   state.localTelemetry.stepsToday = totalStepsToday;
   state.localTelemetry.promptsToday = totalPromptsToday;
@@ -212,6 +213,8 @@ function scanJimRealSteps() {
   return {
     days,
     dayLabels,
+    stepsLast5Hours,
+    jimWeeklySteps,
     jimDailyLiters,
     jimTotalWeeklyLiters,
     jim5hLiters
@@ -320,23 +323,48 @@ function applyTelemetryUpdate(quotaData, jimStats) {
     state.fuel.weeklyCurrentGal = weeklyCurrentGal;
     state.fuel.weeklyTotalBurnedGal = weeklyTotalBurnedGal;
 
-    // 2. Nathan's Telemetry Baseline
-    const nathanDailyLiters = [18.4, 24.2, 14.8, 12.5, 29.6, 22.1, 15.2];
-    const nathanWeeklyLiters = +(nathanDailyLiters.reduce((a, b) => a + b, 0)).toFixed(2);
-    const nathan5hLiters = 15.2;
+    // 2. Family Pool Quota Residual Deduction for Nathan
+    const pool5hBurnPct = Math.max(0.1, +(100 - gemini5hPct).toFixed(2));
+    const poolWeeklyBurnPct = Math.max(0.1, +(100 - geminiWeeklyPct).toFixed(2));
 
-    // 3. Jim's Real Telemetry from Scanned Steps
-    const jimWeeklyLiters = jimStats.jimTotalWeeklyLiters;
+    // Jim's Ground-Truth Step & Water Metrics
     const jim5hLiters = jimStats.jim5hLiters;
+    const jimWeeklyLiters = jimStats.jimTotalWeeklyLiters;
 
-    // Proportional Fuel Burn
-    const total5hL = jim5hLiters + nathan5hLiters;
-    const jimRatio5h = total5hL > 0 ? (jim5hLiters / total5hL) : 0.5;
-    state.fuel.jim.burnedGal = Math.round(totalBurnedGal * jimRatio5h);
+    // Quota burn calibration:
+    // Jim's slice of the 5-hour pool burn (capped at 95% of total pool burn)
+    const jim5hBurnPct = Math.min(pool5hBurnPct * 0.95, Math.max(0.05, +(jimStats.stepsLast5Hours * 0.012).toFixed(2)));
+    // Nathan's slice is the exact residual: Total Pool Burn - Jim's Burn
+    const nathan5hBurnPct = +(pool5hBurnPct - jim5hBurnPct).toFixed(2);
+
+    const jim5hShare = jim5hBurnPct / pool5hBurnPct;
+    const nathan5hShare = nathan5hBurnPct / pool5hBurnPct;
+
+    // Nathan's 5h Water Extrapolated from his quota slice
+    const nathan5hLiters = +((jim5hLiters / (jim5hShare || 0.5)) * nathan5hShare).toFixed(2);
+
+    // Jim's slice of the Weekly pool burn
+    const jimWeeklyBurnPct = Math.min(poolWeeklyBurnPct * 0.95, Math.max(0.05, +(jimStats.jimWeeklySteps * 0.0016).toFixed(2)));
+    // Nathan's weekly slice is the exact residual
+    const nathanWeeklyBurnPct = +(poolWeeklyBurnPct - jimWeeklyBurnPct).toFixed(2);
+
+    const jimWeeklyShare = jimWeeklyBurnPct / poolWeeklyBurnPct;
+    const nathanWeeklyShare = nathanWeeklyBurnPct / poolWeeklyBurnPct;
+
+    // Nathan's Weekly Water Extrapolated
+    const nathanWeeklyLiters = +((jimWeeklyLiters / (jimWeeklyShare || 0.5)) * nathanWeeklyShare).toFixed(2);
+
+    // Nathan's 7-Day Daily Distribution (proportional to daily pool usage)
+    const nathanDailyLiters = jimStats.jimDailyLiters.map(jL => {
+      return +((jL / (jimWeeklyLiters || 1)) * nathanWeeklyLiters).toFixed(2);
+    });
+
+    // 3. Jet Fuel Split (Exact Family Quota Pool Split)
+    state.fuel.jim.burnedGal = Math.round(totalBurnedGal * jim5hShare);
     state.fuel.nathan.burnedGal = Math.max(0, totalBurnedGal - state.fuel.jim.burnedGal);
 
     // 4. Real Water Footprint Update
-    // 5-Hour Water Metrics
+    const total5hL = +(jim5hLiters + nathan5hLiters).toFixed(2);
     const total5hML = Math.round(total5hL * 1000);
     const jim5hML = Math.round(jim5hLiters * 1000);
     const nathan5hML = Math.round(nathan5hLiters * 1000);
@@ -347,11 +375,11 @@ function applyTelemetryUpdate(quotaData, jimStats) {
 
     state.water.jim.mlEvaporated = jim5hML;
     state.water.jim.bottles = +(jim5hML / ML_PER_WATER_BOTTLE).toFixed(1);
-    state.water.jim.percentShare = total5hML > 0 ? +((jim5hML / total5hML) * 100).toFixed(1) : 50;
+    state.water.jim.percentShare = +(jim5hShare * 100).toFixed(1);
 
     state.water.nathan.mlEvaporated = nathan5hML;
     state.water.nathan.bottles = +(nathan5hML / ML_PER_WATER_BOTTLE).toFixed(1);
-    state.water.nathan.percentShare = total5hML > 0 ? +((nathan5hML / total5hML) * 100).toFixed(1) : 50;
+    state.water.nathan.percentShare = +(nathan5hShare * 100).toFixed(1);
 
     // 7-Day Chart Data
     state.water.sevenDayLiters.labels = jimStats.dayLabels;
@@ -370,12 +398,12 @@ function applyTelemetryUpdate(quotaData, jimStats) {
       jim: {
         liters: jimWeeklyLiters,
         bottles: +(jimWeeklyLiters * 1000 / ML_PER_WATER_BOTTLE).toFixed(1),
-        percentShare: weeklyTotalL > 0 ? +((jimWeeklyLiters / weeklyTotalL) * 100).toFixed(1) : 50
+        percentShare: +(jimWeeklyShare * 100).toFixed(1)
       },
       nathan: {
         liters: nathanWeeklyLiters,
         bottles: +(nathanWeeklyLiters * 1000 / ML_PER_WATER_BOTTLE).toFixed(1),
-        percentShare: weeklyTotalL > 0 ? +((nathanWeeklyLiters / weeklyTotalL) * 100).toFixed(1) : 50
+        percentShare: +(nathanWeeklyShare * 100).toFixed(1)
       }
     };
 
