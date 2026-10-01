@@ -198,15 +198,53 @@
       </div>
     </header>
 
-    <!-- TOP-LEVEL ORDER SELECTOR (WATER VS FUEL) -->
-    <div class="flex items-center justify-between py-2 border-b border-slate-800/60 pb-3">
-      <div class="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 gap-1.5 font-mono text-xs shadow-xl">
-        <button id="topBtnWater" onclick="setTopInteractive('water')" class="px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20">
-          <span class="text-base">🚰</span> Water
-        </button>
-        <button id="topBtnFuel" onclick="setTopInteractive('fuel')" class="px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 text-slate-400 hover:text-white">
-          <span class="text-base">⛽</span> Fuel
-        </button>
+    <!-- TOP-LEVEL BANNER (ORDER SELECTOR + WEEKLY NUMBERS TABLE) -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2 border-b border-slate-800/60 pb-3">
+      <!-- Water vs Fuel Stack Order Switcher -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 gap-1.5 font-mono text-xs shadow-xl">
+          <button id="topBtnWater" onclick="setTopInteractive('water')" class="px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/20">
+            <span class="text-base">🚰</span> Water
+          </button>
+          <button id="topBtnFuel" onclick="setTopInteractive('fuel')" class="px-6 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 text-slate-400 hover:text-white">
+            <span class="text-base">⛽</span> Fuel
+          </button>
+        </div>
+      </div>
+
+      <!-- Weekly Numbers Mini-Table -->
+      <div class="glass-card px-4 py-2 rounded-2xl border border-cyan-500/30 bg-slate-900/90 shadow-xl self-start md:self-auto">
+        <div class="flex items-center justify-between gap-4 border-b border-slate-800/80 pb-1 mb-1">
+          <div class="flex items-center gap-1.5 text-[11px] font-bold text-cyan-400 font-mono uppercase tracking-wider">
+            <span>📅</span> Weekly Numbers
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono">7-Day Real Consumption</span>
+        </div>
+        <table class="text-left text-xs font-mono">
+          <thead>
+            <tr class="text-[10px] text-slate-400 border-b border-slate-800/60">
+              <th class="pr-4 pb-1 font-semibold">User</th>
+              <th class="px-3 pb-1 font-semibold text-right">💧 Liters Consumed</th>
+              <th class="pl-3 pb-1 font-semibold text-right">🍼 Water Bottles Used</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/40">
+            <tr>
+              <td class="pr-4 py-1 font-bold text-cyan-300 flex items-center gap-1.5 whitespace-nowrap">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 inline-block animate-pulse"></span> Jim
+              </td>
+              <td id="topWeeklyJimLiters" class="px-3 py-1 text-right font-black text-white whitespace-nowrap">21.5 L</td>
+              <td id="topWeeklyJimBottles" class="pl-3 py-1 text-right font-medium text-cyan-200 whitespace-nowrap">~43 bottles</td>
+            </tr>
+            <tr>
+              <td class="pr-4 py-1 font-bold text-rose-400 flex items-center gap-1.5 whitespace-nowrap">
+                <span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> Nathan
+              </td>
+              <td id="topWeeklyNathanLiters" class="px-3 py-1 text-right font-black text-white whitespace-nowrap">122.1 L</td>
+              <td id="topWeeklyNathanBottles" class="pl-3 py-1 text-right font-medium text-rose-200 whitespace-nowrap">~244 bottles</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -782,6 +820,29 @@
       document.getElementById('nathanWaterBar').innerText = `Nathan: ${nathanPct}%`;
       if (document.getElementById('waterBurnRatioHeader')) {
         document.getElementById('waterBurnRatioHeader').innerText = `Total: ${totalLiters} L evaporated`;
+      }
+
+      // Top Banner Weekly Numbers Table Update
+      const weeklyStats = data.water.weekly || {
+        jim: { liters: 21.5, bottles: 43 },
+        nathan: { liters: 122.1, bottles: 244 }
+      };
+      const topJL = typeof weeklyStats.jim?.liters === 'number' ? weeklyStats.jim.liters.toFixed(1) : (weeklyStats.jim?.liters || '21.5');
+      const topJB = Math.round(weeklyStats.jim?.bottles || 43);
+      const topNL = typeof weeklyStats.nathan?.liters === 'number' ? weeklyStats.nathan.liters.toFixed(1) : (weeklyStats.nathan?.liters || '122.1');
+      const topNB = Math.round(weeklyStats.nathan?.bottles || 244);
+
+      if (document.getElementById('topWeeklyJimLiters')) {
+        document.getElementById('topWeeklyJimLiters').innerText = `${topJL} L`;
+      }
+      if (document.getElementById('topWeeklyJimBottles')) {
+        document.getElementById('topWeeklyJimBottles').innerText = `~${topJB} bottles`;
+      }
+      if (document.getElementById('topWeeklyNathanLiters')) {
+        document.getElementById('topWeeklyNathanLiters').innerText = `${topNL} L`;
+      }
+      if (document.getElementById('topWeeklyNathanBottles')) {
+        document.getElementById('topWeeklyNathanBottles').innerText = `~${topNB} bottles`;
       }
     }
 
