@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "4:07:12 AM",
+    "lastLiveSync":  "4:09:12 AM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -10,7 +10,7 @@
                  "currentGal":  500,
                  "totalBurnedGal":  0,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  296,
+                 "resetsInMinutes":  299,
                  "geminiRemainingPct":  100,
                  "claudeRemainingPct":  93,
                  "weeklyRemainingPct":  89.9,
@@ -58,19 +58,19 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  4840,
-                  "bottlesEvaporated":  9.7,
-                  "officeJugsEvaporated":  0.26,
+                  "totalEvaporatedML":  3910,
+                  "bottlesEvaporated":  7.8,
+                  "officeJugsEvaporated":  0.21,
                   "jim":  {
-                              "mlEvaporated":  4380,
-                              "bottles":  8.8,
+                              "mlEvaporated":  3540,
+                              "bottles":  7.1,
                               "cupsOfCoffee":  12,
                               "percentShare":  95,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  460,
-                                 "bottles":  0.9,
+                                 "mlEvaporated":  370,
+                                 "bottles":  0.7,
                                  "cupsOfCoffee":  48.5,
                                  "percentShare":  10,
                                  "description":  "ð Evaporating cooling towers on high compute"
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  39,
                            "stepsToday":  1292,
-                           "lastScanned":  "2026-10-02T09:07:12.119Z"
+                           "lastScanned":  "2026-10-02T09:09:12.328Z"
                        },
     "events":  [
                    {
