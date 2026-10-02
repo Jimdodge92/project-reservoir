@@ -3,7 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { execSync, exec } = require('child_process');
 
 const PORT = process.env.PORT || 3456;
 const antigravityDir = path.join(os.homedir(), '.gemini', 'antigravity');
@@ -428,6 +428,17 @@ pollLiveGoogleQuota();
 setInterval(() => {
   pollLiveGoogleQuota();
 }, 5000);
+
+// Automatic Background GitHub Pages Synchronizer (every 2 minutes)
+let isSyncingGithub = false;
+setInterval(() => {
+  if (isSyncingGithub) return;
+  isSyncingGithub = true;
+  const scriptPath = path.join(__dirname, 'sync-github.cmd');
+  exec(`cmd.exe /c "${scriptPath}"`, (err) => {
+    isSyncingGithub = false;
+  });
+}, 120000);
 
 // SSE Client list
 let sseClients = [];
