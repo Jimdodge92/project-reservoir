@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "10:35:26 AM",
+    "lastLiveSync":  "10:37:26 AM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -10,7 +10,7 @@
                  "currentGal":  470,
                  "totalBurnedGal":  30,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  124,
+                 "resetsInMinutes":  122,
                  "geminiRemainingPct":  94,
                  "claudeRemainingPct":  88.1,
                  "weeklyRemainingPct":  89.4,
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  42,
                            "stepsToday":  1502,
-                           "lastScanned":  "2026-10-02T15:35:26.589Z"
+                           "lastScanned":  "2026-10-02T15:37:26.718Z"
                        },
     "events":  [
                    {
