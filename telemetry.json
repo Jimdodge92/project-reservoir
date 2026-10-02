@@ -2,16 +2,16 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "11:11:04 PM",
+    "lastLiveSync":  "11:13:04 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
                  "capacityGal":  500,
-                 "currentGal":  436,
-                 "totalBurnedGal":  64,
+                 "currentGal":  433,
+                 "totalBurnedGal":  67,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  199,
-                 "geminiRemainingPct":  87.2,
+                 "resetsInMinutes":  197,
+                 "geminiRemainingPct":  86.6,
                  "claudeRemainingPct":  93,
                  "weeklyRemainingPct":  89.8,
                  "weeklyCapacityGal":  2500,
@@ -19,7 +19,7 @@
                  "weeklyTotalBurnedGal":  255,
                  "weeklyResetsText":  "1 day, 15 hours",
                  "jim":  {
-                             "burnedGal":  61,
+                             "burnedGal":  64,
                              "mode":  "Eco-Cruise (42 MPG)",
                              "speed":  "Mach 0.8 (Subsonic)",
                              "status":  "ð¢ Fuel Efficient"
@@ -53,7 +53,7 @@
                                   },
                                   {
                                       "label":  "Now",
-                                      "remainingPct":  87.2
+                                      "remainingPct":  86.6
                                   }
                               ]
              },
@@ -122,9 +122,9 @@
                              }
               },
     "localTelemetry":  {
-                           "promptsToday":  37,
+                           "promptsToday":  38,
                            "stepsToday":  1236,
-                           "lastScanned":  "2026-10-02T04:11:04.401Z"
+                           "lastScanned":  "2026-10-02T04:13:04.604Z"
                        },
     "events":  [
                    {
