@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "4:49:16 PM",
+    "lastLiveSync":  "4:51:17 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  44610,
-                  "bottlesEvaporated":  89.2,
-                  "officeJugsEvaporated":  2.36,
+                  "totalEvaporatedML":  44180,
+                  "bottlesEvaporated":  88.4,
+                  "officeJugsEvaporated":  2.33,
                   "jim":  {
-                              "mlEvaporated":  1140,
-                              "bottles":  2.3,
+                              "mlEvaporated":  1080,
+                              "bottles":  2.2,
                               "cupsOfCoffee":  12,
-                              "percentShare":  2.6,
+                              "percentShare":  2.4,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  43470,
-                                 "bottles":  86.9,
+                                 "mlEvaporated":  43100,
+                                 "bottles":  86.2,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  97.4,
+                                 "percentShare":  97.6,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  44,
                            "stepsToday":  581,
-                           "lastScanned":  "2026-10-04T21:49:16.475Z"
+                           "lastScanned":  "2026-10-04T21:51:17.606Z"
                        },
     "events":  [
                    {
