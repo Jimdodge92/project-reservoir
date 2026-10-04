@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "6:13:57 PM",
+    "lastLiveSync":  "6:16:07 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  45000,
+                  "totalEvaporatedML":  45020,
                   "bottlesEvaporated":  90,
                   "officeJugsEvaporated":  2.38,
                   "jim":  {
-                              "mlEvaporated":  19800,
-                              "bottles":  39.6,
+                              "mlEvaporated":  20160,
+                              "bottles":  40.3,
                               "cupsOfCoffee":  12,
-                              "percentShare":  44,
+                              "percentShare":  44.8,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  25200,
-                                 "bottles":  50.4,
+                                 "mlEvaporated":  24860,
+                                 "bottles":  49.7,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  56,
+                                 "percentShare":  55.2,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -92,7 +92,7 @@
                                                      63.66,
                                                      58.5,
                                                      96.96,
-                                                     54.6
+                                                     54.96
                                                  ],
                                          "nathan":  [
                                                         0,
@@ -101,30 +101,30 @@
                                                         3.35,
                                                         3.08,
                                                         5.1,
-                                                        2.87
+                                                        2.89
                                                     ]
                                      },
                   "weekly":  {
-                                 "totalEvaporatedML":  288130,
-                                 "totalLiters":  288.13,
-                                 "bottlesEvaporated":  576.3,
-                                 "officeJugsEvaporated":  15.22,
+                                 "totalEvaporatedML":  288510,
+                                 "totalLiters":  288.51,
+                                 "bottlesEvaporated":  577,
+                                 "officeJugsEvaporated":  15.24,
                                  "jim":  {
-                                             "liters":  273.72,
-                                             "bottles":  547.4,
+                                             "liters":  274.08,
+                                             "bottles":  548.2,
                                              "percentShare":  95
                                          },
                                  "nathan":  {
-                                                "liters":  14.41,
-                                                "bottles":  28.8,
+                                                "liters":  14.43,
+                                                "bottles":  28.9,
                                                 "percentShare":  5
                                             }
                              }
               },
     "localTelemetry":  {
-                           "promptsToday":  57,
-                           "stepsToday":  910,
-                           "lastScanned":  "2026-10-04T23:13:57.319Z"
+                           "promptsToday":  59,
+                           "stepsToday":  916,
+                           "lastScanned":  "2026-10-04T23:16:07.070Z"
                        },
     "events":  [
                    {
