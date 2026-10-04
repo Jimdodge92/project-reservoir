@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "4:41:00 PM",
+    "lastLiveSync":  "4:43:07 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  45000,
-                  "bottlesEvaporated":  90,
-                  "officeJugsEvaporated":  2.38,
+                  "totalEvaporatedML":  45410,
+                  "bottlesEvaporated":  90.8,
+                  "officeJugsEvaporated":  2.4,
                   "jim":  {
-                              "mlEvaporated":  2400,
-                              "bottles":  4.8,
+                              "mlEvaporated":  2220,
+                              "bottles":  4.4,
                               "cupsOfCoffee":  12,
-                              "percentShare":  5.3,
+                              "percentShare":  4.9,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  42600,
-                                 "bottles":  85.2,
+                                 "mlEvaporated":  43190,
+                                 "bottles":  86.4,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  94.7,
+                                 "percentShare":  95.1,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  44,
                            "stepsToday":  581,
-                           "lastScanned":  "2026-10-04T21:41:00.026Z"
+                           "lastScanned":  "2026-10-04T21:43:06.990Z"
                        },
     "events":  [
                    {
