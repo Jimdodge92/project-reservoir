@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "9:55:57 PM",
+    "lastLiveSync":  "9:58:05 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,12 +58,12 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  86840,
-                  "bottlesEvaporated":  173.7,
-                  "officeJugsEvaporated":  4.59,
+                  "totalEvaporatedML":  86780,
+                  "bottlesEvaporated":  173.6,
+                  "officeJugsEvaporated":  4.58,
                   "jim":  {
-                              "mlEvaporated":  82500,
-                              "bottles":  165,
+                              "mlEvaporated":  82440,
+                              "bottles":  164.9,
                               "cupsOfCoffee":  12,
                               "percentShare":  95,
                               "description":  "ð§ Sipping a glass of water"
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  13,
                            "stepsToday":  877,
-                           "lastScanned":  "2026-10-05T02:55:57.529Z"
+                           "lastScanned":  "2026-10-05T02:58:05.184Z"
                        },
     "events":  [
                    {
