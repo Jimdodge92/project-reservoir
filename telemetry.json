@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "5:28:01 PM",
+    "lastLiveSync":  "5:30:01 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  18,
                            "stepsToday":  695,
-                           "lastScanned":  "2026-10-07T22:28:01.555Z"
+                           "lastScanned":  "2026-10-07T22:30:01.460Z"
                        },
     "events":  [
                    {
