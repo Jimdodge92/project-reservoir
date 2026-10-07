@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "10:10:01 PM",
+    "lastLiveSync":  "10:11:56 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  44920,
-                  "bottlesEvaporated":  89.8,
-                  "officeJugsEvaporated":  2.37,
+                  "totalEvaporatedML":  45080,
+                  "bottlesEvaporated":  90.2,
+                  "officeJugsEvaporated":  2.38,
                   "jim":  {
-                              "mlEvaporated":  11580,
-                              "bottles":  23.2,
+                              "mlEvaporated":  11520,
+                              "bottles":  23,
                               "cupsOfCoffee":  12,
-                              "percentShare":  25.8,
+                              "percentShare":  25.6,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  33340,
-                                 "bottles":  66.7,
+                                 "mlEvaporated":  33560,
+                                 "bottles":  67.1,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  74.2,
+                                 "percentShare":  74.4,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  0,
                            "stepsToday":  0,
-                           "lastScanned":  "2026-10-07T03:10:01.525Z"
+                           "lastScanned":  "2026-10-07T03:12:00.852Z"
                        },
     "events":  [
                    {
