@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "10:07:55 PM",
+    "lastLiveSync":  "10:10:01 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  45000,
-                  "bottlesEvaporated":  90,
-                  "officeJugsEvaporated":  2.38,
+                  "totalEvaporatedML":  44920,
+                  "bottlesEvaporated":  89.8,
+                  "officeJugsEvaporated":  2.37,
                   "jim":  {
-                              "mlEvaporated":  12000,
-                              "bottles":  24,
+                              "mlEvaporated":  11580,
+                              "bottles":  23.2,
                               "cupsOfCoffee":  12,
-                              "percentShare":  26.7,
+                              "percentShare":  25.8,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  33000,
-                                 "bottles":  66,
+                                 "mlEvaporated":  33340,
+                                 "bottles":  66.7,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  73.3,
+                                 "percentShare":  74.2,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  0,
                            "stepsToday":  0,
-                           "lastScanned":  "2026-10-07T03:08:01.062Z"
+                           "lastScanned":  "2026-10-07T03:10:01.525Z"
                        },
     "events":  [
                    {
