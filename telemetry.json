@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "10:24:09 PM",
+    "lastLiveSync":  "10:26:14 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  45100,
-                  "bottlesEvaporated":  90.2,
+                  "totalEvaporatedML":  45050,
+                  "bottlesEvaporated":  90.1,
                   "officeJugsEvaporated":  2.38,
                   "jim":  {
-                              "mlEvaporated":  9420,
-                              "bottles":  18.8,
+                              "mlEvaporated":  9360,
+                              "bottles":  18.7,
                               "cupsOfCoffee":  12,
-                              "percentShare":  20.9,
+                              "percentShare":  20.8,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  35680,
+                                 "mlEvaporated":  35690,
                                  "bottles":  71.4,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  79.1,
+                                 "percentShare":  79.2,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  0,
                            "stepsToday":  0,
-                           "lastScanned":  "2026-10-07T03:24:09.514Z"
+                           "lastScanned":  "2026-10-07T03:26:14.198Z"
                        },
     "events":  [
                    {
