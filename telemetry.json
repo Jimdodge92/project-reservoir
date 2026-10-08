@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "12:15:10 AM",
+    "lastLiveSync":  "12:17:10 AM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  44610,
-                  "bottlesEvaporated":  89.2,
-                  "officeJugsEvaporated":  2.36,
+                  "totalEvaporatedML":  45000,
+                  "bottlesEvaporated":  90,
+                  "officeJugsEvaporated":  2.38,
                   "jim":  {
-                              "mlEvaporated":  1140,
-                              "bottles":  2.3,
+                              "mlEvaporated":  900,
+                              "bottles":  1.8,
                               "cupsOfCoffee":  12,
-                              "percentShare":  2.6,
+                              "percentShare":  2,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  43470,
-                                 "bottles":  86.9,
+                                 "mlEvaporated":  44100,
+                                 "bottles":  88.2,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  97.4,
+                                 "percentShare":  98,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  5,
                            "stepsToday":  84,
-                           "lastScanned":  "2026-10-08T05:15:10.060Z"
+                           "lastScanned":  "2026-10-08T05:17:10.269Z"
                        },
     "events":  [
                    {
