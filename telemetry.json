@@ -2,16 +2,16 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "6:32:19 PM",
+    "lastLiveSync":  "6:34:20 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
                  "capacityGal":  500,
-                 "currentGal":  468,
-                 "totalBurnedGal":  32,
+                 "currentGal":  466,
+                 "totalBurnedGal":  34,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  115,
-                 "geminiRemainingPct":  93.5,
+                 "resetsInMinutes":  113,
+                 "geminiRemainingPct":  93.3,
                  "claudeRemainingPct":  0,
                  "weeklyRemainingPct":  91.1,
                  "weeklyCapacityGal":  2500,
@@ -19,13 +19,13 @@
                  "weeklyTotalBurnedGal":  222,
                  "weeklyResetsText":  "1 day, 20 hours",
                  "jim":  {
-                             "burnedGal":  21,
+                             "burnedGal":  22,
                              "mode":  "Eco-Cruise (42 MPG)",
                              "speed":  "Mach 0.8 (Subsonic)",
                              "status":  "ð¢ Fuel Efficient"
                          },
                  "nathan":  {
-                                "burnedGal":  11,
+                                "burnedGal":  12,
                                 "mode":  "ð¥ Twin Afterburners (6 GPH)",
                                 "speed":  "Mach 3.2 (Supersonic)",
                                 "status":  "ð¨ Active Quota Burn"
@@ -53,24 +53,24 @@
                                   },
                                   {
                                       "label":  "Now",
-                                      "remainingPct":  93.5
+                                      "remainingPct":  93.3
                                   }
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  32520,
-                  "bottlesEvaporated":  65,
-                  "officeJugsEvaporated":  1.72,
+                  "totalEvaporatedML":  33530,
+                  "bottlesEvaporated":  67.1,
+                  "officeJugsEvaporated":  1.77,
                   "jim":  {
-                              "mlEvaporated":  21060,
-                              "bottles":  42.1,
+                              "mlEvaporated":  21720,
+                              "bottles":  43.4,
                               "cupsOfCoffee":  12,
                               "percentShare":  64.8,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  11460,
-                                 "bottles":  22.9,
+                                 "mlEvaporated":  11810,
+                                 "bottles":  23.6,
                                  "cupsOfCoffee":  48.5,
                                  "percentShare":  35.2,
                                  "description":  "ð Evaporating cooling towers on high compute"
@@ -92,7 +92,7 @@
                                                      114.48,
                                                      32.7,
                                                      48.9,
-                                                     54.36
+                                                     55.02
                                                  ],
                                          "nathan":  [
                                                         3.11,
@@ -101,30 +101,30 @@
                                                         6.09,
                                                         1.74,
                                                         2.6,
-                                                        2.89
+                                                        2.93
                                                     ]
                                      },
                   "weekly":  {
-                                 "totalEvaporatedML":  495690,
-                                 "totalLiters":  495.69,
-                                 "bottlesEvaporated":  991.4,
-                                 "officeJugsEvaporated":  26.19,
+                                 "totalEvaporatedML":  496380,
+                                 "totalLiters":  496.38,
+                                 "bottlesEvaporated":  992.8,
+                                 "officeJugsEvaporated":  26.23,
                                  "jim":  {
-                                             "liters":  470.64,
-                                             "bottles":  941.3,
+                                             "liters":  471.3,
+                                             "bottles":  942.6,
                                              "percentShare":  95
                                          },
                                  "nathan":  {
-                                                "liters":  25.05,
-                                                "bottles":  50.1,
+                                                "liters":  25.08,
+                                                "bottles":  50.2,
                                                 "percentShare":  5.1
                                             }
                              }
               },
     "localTelemetry":  {
-                           "promptsToday":  27,
-                           "stepsToday":  906,
-                           "lastScanned":  "2026-10-08T23:32:19.146Z"
+                           "promptsToday":  28,
+                           "stepsToday":  917,
+                           "lastScanned":  "2026-10-08T23:34:20.244Z"
                        },
     "events":  [
                    {
