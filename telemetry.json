@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "10:45:06 PM",
+    "lastLiveSync":  "10:47:06 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -19,13 +19,13 @@
                  "weeklyTotalBurnedGal":  175,
                  "weeklyResetsText":  "2 days, 1 hour",
                  "jim":  {
-                             "burnedGal":  11,
+                             "burnedGal":  10,
                              "mode":  "Eco-Cruise (42 MPG)",
                              "speed":  "Mach 0.8 (Subsonic)",
                              "status":  "ð¢ Fuel Efficient"
                          },
                  "nathan":  {
-                                "burnedGal":  34,
+                                "burnedGal":  35,
                                 "mode":  "ð¥ Twin Afterburners (6 GPH)",
                                 "speed":  "Mach 3.2 (Supersonic)",
                                 "status":  "ð¨ Active Quota Burn"
@@ -62,17 +62,17 @@
                   "bottlesEvaporated":  90.1,
                   "officeJugsEvaporated":  2.38,
                   "jim":  {
-                              "mlEvaporated":  11160,
-                              "bottles":  22.3,
+                              "mlEvaporated":  10260,
+                              "bottles":  20.5,
                               "cupsOfCoffee":  12,
-                              "percentShare":  24.8,
+                              "percentShare":  22.8,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  33880,
-                                 "bottles":  67.8,
+                                 "mlEvaporated":  34780,
+                                 "bottles":  69.6,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  75.2,
+                                 "percentShare":  77.2,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  5,
                            "stepsToday":  84,
-                           "lastScanned":  "2026-10-08T03:45:06.169Z"
+                           "lastScanned":  "2026-10-08T03:47:06.159Z"
                        },
     "events":  [
                    {
