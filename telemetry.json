@@ -2,7 +2,7 @@
   "userName": "Jim",
   "brotherName": "Nathan",
   "syncIntervalSec": 5,
-  "lastLiveSync": "2:49:38 PM",
+  "lastLiveSync": "2:51:33 PM",
   "livePlan": "Google AI Ultra",
   "availableCredits": 640,
   "fuel": {
@@ -19,13 +19,13 @@
     "weeklyTotalBurnedGal": 175,
     "weeklyResetsText": "2 days, 1 hour",
     "jim": {
-      "burnedGal": 20,
+      "burnedGal": 18,
       "mode": "Eco-Cruise (42 MPG)",
       "speed": "Mach 0.8 (Subsonic)",
       "status": "🟢 Fuel Efficient"
     },
     "nathan": {
-      "burnedGal": 25,
+      "burnedGal": 27,
       "mode": "🔥 Twin Afterburners (6 GPH)",
       "speed": "Mach 3.2 (Supersonic)",
       "status": "🚨 Active Quota Burn"
@@ -58,21 +58,21 @@
     ]
   },
   "water": {
-    "totalEvaporatedML": 44960,
-    "bottlesEvaporated": 89.9,
+    "totalEvaporatedML": 45050,
+    "bottlesEvaporated": 90.1,
     "officeJugsEvaporated": 2.38,
     "jim": {
-      "mlEvaporated": 19980,
-      "bottles": 40,
+      "mlEvaporated": 18420,
+      "bottles": 36.8,
       "cupsOfCoffee": 12,
-      "percentShare": 44.4,
+      "percentShare": 40.9,
       "description": "💧 Sipping a glass of water"
     },
     "nathan": {
-      "mlEvaporated": 24980,
-      "bottles": 50,
+      "mlEvaporated": 26630,
+      "bottles": 53.3,
       "cupsOfCoffee": 48.5,
-      "percentShare": 55.6,
+      "percentShare": 59.1,
       "description": "🌊 Evaporating cooling towers on high compute"
     },
     "sevenDayLiters": {
@@ -124,7 +124,7 @@
   "localTelemetry": {
     "promptsToday": 13,
     "stepsToday": 555,
-    "lastScanned": "2026-10-08T19:49:38.369Z"
+    "lastScanned": "2026-10-08T19:51:33.355Z"
   },
   "events": [
     {
