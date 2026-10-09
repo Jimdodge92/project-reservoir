@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "5:03:39 PM",
+    "lastLiveSync":  "5:05:44 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -10,7 +10,7 @@
                  "currentGal":  403,
                  "totalBurnedGal":  97,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  107,
+                 "resetsInMinutes":  105,
                  "geminiRemainingPct":  80.6,
                  "claudeRemainingPct":  0,
                  "weeklyRemainingPct":  86.8,
@@ -58,21 +58,21 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  97090,
-                  "bottlesEvaporated":  194.2,
-                  "officeJugsEvaporated":  5.13,
+                  "totalEvaporatedML":  96950,
+                  "bottlesEvaporated":  193.9,
+                  "officeJugsEvaporated":  5.12,
                   "jim":  {
-                              "mlEvaporated":  22320,
-                              "bottles":  44.6,
+                              "mlEvaporated":  21540,
+                              "bottles":  43.1,
                               "cupsOfCoffee":  12,
-                              "percentShare":  23,
+                              "percentShare":  22.2,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  74770,
-                                 "bottles":  149.5,
+                                 "mlEvaporated":  75410,
+                                 "bottles":  150.8,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  77,
+                                 "percentShare":  77.8,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  31,
                            "stepsToday":  1146,
-                           "lastScanned":  "2026-10-09T22:03:44.788Z"
+                           "lastScanned":  "2026-10-09T22:05:44.503Z"
                        },
     "events":  [
                    {
