@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "11:59:51 PM",
+    "lastLiveSync":  "12:01:51 AM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -10,7 +10,7 @@
                  "currentGal":  500,
                  "totalBurnedGal":  0,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  296,
+                 "resetsInMinutes":  299,
                  "geminiRemainingPct":  100,
                  "claudeRemainingPct":  97.3,
                  "weeklyRemainingPct":  99.7,
@@ -58,31 +58,31 @@
                               ]
              },
     "water":  {
-                  "totalEvaporatedML":  2450,
-                  "bottlesEvaporated":  4.9,
-                  "officeJugsEvaporated":  0.13,
+                  "totalEvaporatedML":  1860,
+                  "bottlesEvaporated":  3.7,
+                  "officeJugsEvaporated":  0.1,
                   "jim":  {
-                              "mlEvaporated":  2220,
-                              "bottles":  4.4,
+                              "mlEvaporated":  1680,
+                              "bottles":  3.4,
                               "cupsOfCoffee":  12,
                               "percentShare":  95,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
-                                 "mlEvaporated":  230,
-                                 "bottles":  0.5,
+                                 "mlEvaporated":  180,
+                                 "bottles":  0.4,
                                  "cupsOfCoffee":  48.5,
                                  "percentShare":  10,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
                                          "labels":  [
-                                                        "Sun",
                                                         "Mon",
                                                         "Tue",
                                                         "Wed",
                                                         "Thu",
                                                         "Fri",
+                                                        "Sat",
                                                         "Today"
                                                     ],
                                          "jim":  [
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  3,
                            "stepsToday":  37,
-                           "lastScanned":  "2026-10-11T04:59:51.084Z"
+                           "lastScanned":  "2026-10-11T05:01:51.253Z"
                        },
     "events":  [
                    {
