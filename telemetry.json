@@ -2,21 +2,21 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "4:39:09 PM",
+    "lastLiveSync":  "4:41:09 PM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
                  "capacityGal":  500,
-                 "currentGal":  374,
-                 "totalBurnedGal":  126,
+                 "currentGal":  364,
+                 "totalBurnedGal":  136,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  20,
-                 "geminiRemainingPct":  74.8,
+                 "resetsInMinutes":  18,
+                 "geminiRemainingPct":  72.7,
                  "claudeRemainingPct":  92.9,
-                 "weeklyRemainingPct":  96.1,
+                 "weeklyRemainingPct":  95.9,
                  "weeklyCapacityGal":  2500,
-                 "weeklyCurrentGal":  2403,
-                 "weeklyTotalBurnedGal":  97,
+                 "weeklyCurrentGal":  2398,
+                 "weeklyTotalBurnedGal":  102,
                  "weeklyResetsText":  "5 days, 22 hours",
                  "jim":  {
                              "burnedGal":  0,
@@ -25,7 +25,7 @@
                              "status":  "ð¢ Fuel Efficient"
                          },
                  "nathan":  {
-                                "burnedGal":  126,
+                                "burnedGal":  136,
                                 "mode":  "ð¥ Twin Afterburners (6 GPH)",
                                 "speed":  "Mach 3.2 (Supersonic)",
                                 "status":  "ð¨ Active Quota Burn"
@@ -53,7 +53,7 @@
                                   },
                                   {
                                       "label":  "Now",
-                                      "remainingPct":  74.8
+                                      "remainingPct":  72.7
                                   }
                               ]
              },
@@ -95,18 +95,18 @@
                                                      2.22
                                                  ],
                                          "nathan":  [
-                                                        6.18,
+                                                        6.17,
                                                         1.76,
                                                         2.64,
                                                         3.18,
-                                                        4,
+                                                        3.99,
                                                         0.38,
                                                         0.12
                                                     ]
                                      },
                   "weekly":  {
-                                 "totalEvaporatedML":  356600,
-                                 "totalLiters":  356.6,
+                                 "totalEvaporatedML":  356580,
+                                 "totalLiters":  356.58,
                                  "bottlesEvaporated":  713.2,
                                  "officeJugsEvaporated":  18.84,
                                  "jim":  {
@@ -115,7 +115,7 @@
                                              "percentShare":  95
                                          },
                                  "nathan":  {
-                                                "liters":  18.26,
+                                                "liters":  18.24,
                                                 "bottles":  36.5,
                                                 "percentShare":  5.1
                                             }
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  3,
                            "stepsToday":  37,
-                           "lastScanned":  "2026-10-11T21:39:09.621Z"
+                           "lastScanned":  "2026-10-11T21:41:09.785Z"
                        },
     "events":  [
                    {
