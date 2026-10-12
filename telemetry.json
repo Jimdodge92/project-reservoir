@@ -2,16 +2,16 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "2:01:55 AM",
+    "lastLiveSync":  "2:03:55 AM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
                  "capacityGal":  500,
-                 "currentGal":  352,
-                 "totalBurnedGal":  148,
+                 "currentGal":  346,
+                 "totalBurnedGal":  154,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  94,
-                 "geminiRemainingPct":  70.4,
+                 "resetsInMinutes":  92,
+                 "geminiRemainingPct":  69.2,
                  "claudeRemainingPct":  92.9,
                  "weeklyRemainingPct":  92.1,
                  "weeklyCapacityGal":  2500,
@@ -25,7 +25,7 @@
                              "status":  "ð¢ Fuel Efficient"
                          },
                  "nathan":  {
-                                "burnedGal":  148,
+                                "burnedGal":  154,
                                 "mode":  "ð¥ Twin Afterburners (6 GPH)",
                                 "speed":  "Mach 3.2 (Supersonic)",
                                 "status":  "ð¨ Active Quota Burn"
@@ -53,7 +53,7 @@
                                   },
                                   {
                                       "label":  "Now",
-                                      "remainingPct":  70.4
+                                      "remainingPct":  69.2
                                   }
                               ]
              },
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  0,
                            "stepsToday":  0,
-                           "lastScanned":  "2026-10-12T07:01:55.418Z"
+                           "lastScanned":  "2026-10-12T07:03:55.702Z"
                        },
     "events":  [
                    {
