@@ -2,7 +2,7 @@
     "userName":  "Jim",
     "brotherName":  "Nathan",
     "syncIntervalSec":  5,
-    "lastLiveSync":  "9:42:39 AM",
+    "lastLiveSync":  "9:44:39 AM",
     "livePlan":  "Google AI Ultra",
     "availableCredits":  640,
     "fuel":  {
@@ -10,8 +10,8 @@
                  "currentGal":  492,
                  "totalBurnedGal":  8,
                  "burnRateGPH":  14.8,
-                 "resetsInMinutes":  190,
-                 "geminiRemainingPct":  98.4,
+                 "resetsInMinutes":  188,
+                 "geminiRemainingPct":  98.3,
                  "claudeRemainingPct":  92.9,
                  "weeklyRemainingPct":  88.3,
                  "weeklyCapacityGal":  2500,
@@ -53,7 +53,7 @@
                                   },
                                   {
                                       "label":  "Now",
-                                      "remainingPct":  98.4
+                                      "remainingPct":  98.3
                                   }
                               ]
              },
@@ -65,14 +65,14 @@
                               "mlEvaporated":  0,
                               "bottles":  0,
                               "cupsOfCoffee":  12,
-                              "percentShare":  3.1,
+                              "percentShare":  2.9,
                               "description":  "ð§ Sipping a glass of water"
                           },
                   "nathan":  {
                                  "mlEvaporated":  0,
                                  "bottles":  0,
                                  "cupsOfCoffee":  48.5,
-                                 "percentShare":  96.9,
+                                 "percentShare":  97.1,
                                  "description":  "ð Evaporating cooling towers on high compute"
                              },
                   "sevenDayLiters":  {
@@ -124,7 +124,7 @@
     "localTelemetry":  {
                            "promptsToday":  0,
                            "stepsToday":  0,
-                           "lastScanned":  "2026-10-13T14:42:39.429Z"
+                           "lastScanned":  "2026-10-13T14:44:39.540Z"
                        },
     "events":  [
                    {
